@@ -16,4 +16,4 @@ __pycache__/
 
 *.in
 
-src/bitrix/bitrix/settings.py
+src/evo/evo/settings.py
