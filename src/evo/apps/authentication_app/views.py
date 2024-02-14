@@ -1,25 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 
 from django.views import View
 
-from .mixins import AuthenticatedUserRedirectMixin
+from .mixins import RedirectAuthenticatedUserMixin
 
-class AuthLoginPageView(AuthenticatedUserRedirectMixin, View):
+class AuthLoginPageView(RedirectAuthenticatedUserMixin, View):
     template_name = 'authentication_app/auth.html'
 
     def get(self, request):
-        print(request.user)
-
         return render(request, template_name=self.template_name)
     
-class AuthRegistrPageView(AuthenticatedUserRedirectMixin, View):
+class AuthRegistrPageView(RedirectAuthenticatedUserMixin, View):
     template_name = 'authentication_app/registr.html'
 
     def get(self, request):
         return render(request, template_name=self.template_name)
     
-class ResetPasswordPageView(AuthenticatedUserRedirectMixin, View):
+class ResetPasswordPageView(RedirectAuthenticatedUserMixin, View):
     template_name = 'authentication_app/reset_password.html'
 
     def get(self, request): 
         return render(request, template_name=self.template_name)
+    
+class LogoutUserView(View):
+    def get(self, request): 
+        logout(request)
+
+        return redirect('auth_page')

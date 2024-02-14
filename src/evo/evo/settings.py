@@ -88,10 +88,10 @@ USE_TZ = True
 AUTH_USER_MODEL = 'authentication_app.CustomUser'
 
 # STATIC FILES CONFIGURATION
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'shared_static',
 ]
-STATIC_URL = 'static/'
 
 # MEDIA FILES CONFIGURATION
 MEDIA_URL = '/media/'

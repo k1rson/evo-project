@@ -1,1 +1,265 @@
-admin
+{% extends "main_app/base/base_main.html" %}
+
+{% load static %}
+
+{% block title %}Dashboard - Admin - EVO{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/main_css.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-auto  bg-light sticky-top shadow shadow-lg">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center mt-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <img src="{% static 'image/svg/icon-home.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <img src="{% static 'image/svg/icon-home.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <img src="{% static 'image/svg/icon-home.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Мониторинг серверов">
+                            <img src="{% static 'image/svg/icon-server.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Настройки">
+                            <img src="{% static 'image/svg/icon-settings.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Выйти из аккаунта">
+                            <img src="{% static 'image/svg/icon-exit.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm p-3 min-vh-100">
+            <!-- first section -->
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="col-sm-12 col-lg-6 mb-2">
+                        <div class="card text-start animate__animated animate__slideInLeft" style="min-height: 500px;">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img src="{% static 'image/svg/icon-chat.svg' %}" class="me-2" width="30px" />
+                                        <p class="m-0">Общение с коллегами</p>
+                                    </div>
+                                    <img src="{% static 'image/svg/icon-settings.svg' %}" class="me-2" width="25px" />
+                                </div>
+                            </div>
+                            <div class="card-body p-0 position-relative" style="height: 200px; overflow: hidden;">
+                                <ul class="list-group list-group-flush overflow-auto h-100" style="max-height: 100%;">
+                                    <li class="list-group-item border-0 mb-2">
+                                        <div class="p-0">
+                                            <div class="d-flex justify-content-start align-items-start">
+                                                <div class="position-relative me-2">
+                                                    <img src="{% static 'image/png/avatar.png' %}" width="30px" />
+                                                    <span class="online-marker"></span>
+                                                </div>
+                                                <p class="m-0 chat-box small">
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="mx-5 d-flex justify-content-start align-items-center">
+                                                <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
+                                                <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-0 mb-2">
+                                        <div class="p-0">
+                                            <div class="d-flex justify-content-start align-items-start">
+                                                <div class="position-relative me-2">
+                                                    <img src="{% static 'image/png/avatar.png' %}" width="30px" />
+                                                    <span class="online-marker"></span>
+                                                </div>
+                                                <p class="m-0 chat-box small">
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="mx-5 d-flex justify-content-start align-items-center">
+                                                <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
+                                                <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-0 mb-2">
+                                        <div class="p-0">
+                                            <div class="d-flex justify-content-start align-items-start">
+                                                <div class="position-relative me-2">
+                                                    <img src="{% static 'image/png/avatar.png' %}" width="30px" />
+                                                    <span class="online-marker"></span>
+                                                </div>
+                                                <p class="m-0 chat-box small">
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="mx-5 d-flex justify-content-start align-items-center">
+                                                <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
+                                                <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-0 mb-2">
+                                        <div class="p-0">
+                                            <div class="d-flex justify-content-start align-items-start">
+                                                <div class="position-relative me-2">
+                                                    <img src="{% static 'image/png/avatar.png' %}" width="30px" />
+                                                    <span class="online-marker"></span>
+                                                </div>
+                                                <p class="m-0 chat-box small">
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                    But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="mx-5 d-flex justify-content-start align-items-center">
+                                                <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
+                                                <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer p-2 m-0">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="input-group flex-nowrap">
+                                        <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
+                                        <input type="text" class="form-control" placeholder="Напишите что-нибудь...">
+                        
+                                        <button class="btn btn-sm btn-outline-success mx-2">Отправить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6 mb-2" >
+                        <div class="card text-start animate__animated animate__slideInRight" style="min-height: 500px;">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img src="{% static 'image/svg/icon-technical-support.svg' %}" class="me-2" width="30px" />
+                                        <p class="m-0">Тикеты технической поддержки</p>
+                                    </div>
+                                        <img src="{% static 'image/svg/icon-settings.svg' %}" class="me-2" width="25px" />
+                                </div>
+                            </div>
+                            <div class="card-body p-0 w-100 h-100">
+                                <div class="position-relative" style="height: 200px; overflow: hidden;">
+                                    <ul class="list-group list-group-flush overflow-auto" style="max-height: 100%;">
+                                        <li class="list-group-item border-0 mb-2">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-footer p-2 m-0">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="input-group flex-nowrap">
+                                        <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
+                                        <input type="text" class="form-control" placeholder="Напишите что-нибудь...">
+
+                                        <button class="btn btn-sm btn-outline-success mx-2">Отправить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- second section -->
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="col-sm-12 col-lg-6 mb-2">
+                        <div class="card text-start animate__animated animate__slideInLeft" style="min-height: 500px;">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img src="{% static 'image/svg/icon-rating.svg' %}" class="me-2" width="30px" />
+                                        <p class="m-0">Рейтинг продаж книг</p>
+                                    </div>
+                                    <img src="{% static 'image/svg/icon-settings.svg' %}" class="me-2" width="25px" />
+                                </div>
+                            </div>
+                            <div class="card-body p-0 position-relative" style="height: 200px; overflow: hidden;">
+                                <table class="table table-hover">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First</th>
+                                        <th scope="col">Last</th>
+                                        <th scope="col">Handle</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">3</th>
+                                        <td colspan="2">Larry the Bird</td>
+                                        <td>@twitter</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="card-footer p-2 m-0">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="input-group flex-nowrap">
+                                        <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
+                                        <input type="text" class="form-control" placeholder="Напишите что-нибудь...">
+                        
+                                        <button class="btn btn-sm btn-outline-success mx-2">Отправить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

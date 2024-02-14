@@ -1,0 +1,64 @@
+body {
+    background-color: #eee;
+}
+
+.nav-brand-text {
+    color: black;
+    font-size: 22px;
+}
+
+.nav-brand-text:hover {
+    color: black;
+}
+
+.btn-check:focus+.btn, .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25); 
+}
+
+.dropdown-menu-header {
+    margin-top: -0.65rem;
+    margin-bottom: 0.65rem;
+    position: relative;
+    z-index: 6;
+}
+
+.vertical-scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+}
+
+.indicator {
+    position: absolute;
+    width: 4px;
+    height: 60%;
+    border-radius: 0.3rem;
+    left: 0.625rem;
+    top: 20%;
+    opacity: .6;
+}
+
+.chat-box {
+    position: relative;
+    opacity: 1;
+    background: #e0f3ff;
+    border: 0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    border-top-left-radius: 0.25rem;
+    display: flex;
+    max-width: 50%;
+    min-width: 95%;
+    text-align: left;
+}
+
+.online-marker {
+    position: absolute;
+    border: 2px solid white;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgb(58, 196, 125); 
+}
