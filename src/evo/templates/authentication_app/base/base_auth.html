@@ -1,0 +1,28 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ========== Bootstrap ========== -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
+
+    <!-- ========== Custom ========== -->
+    <link rel="icon" href="{% static 'image/svg/logo-evo-none-text.svg' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block css %}{% endblock css %}
+
+
+    <title>{% block title %}UNKNOW - EVO{% endblock title %}</title>
+</head>
+<body>
+    {% block content %}{% endblock content %}
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/libraries/vue.js' %}"></script>
+    <script src="{% static 'js/libraries/cookie_hook.min.js' %}"></script>
+    <script src="{% static 'js/general_utils.js' %}"></script>
+    <script src="{% static 'js/vue/vue_components.js' %}"></script>
+    {% block scripts %}{% endblock scripts %}
+</body>

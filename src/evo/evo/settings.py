@@ -17,7 +17,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework', 
-    'apps.authentication_app.apps.AuthenticationAppConfig'
+    'rest_framework.authtoken',
+    'apps.authentication_app.apps.AuthenticationAppConfig',
+    'apps.mail_client_app.apps.MailClientAppConfig', 
+    'apps.main_app.apps.MainAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -82,11 +85,13 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
+AUTH_USER_MODEL = 'authentication_app.CustomUser'
+
 # STATIC FILES CONFIGURATION
-STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'shared_static',
 ]
+STATIC_URL = 'static/'
 
 # MEDIA FILES CONFIGURATION
 MEDIA_URL = '/media/'
@@ -95,8 +100,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # DRF CONFIG
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
+    ], 
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+# EMAIL CONFING
+
+# IMAP CONFIGURATION
+IMAP_SERVER = 'imap.mail.ru'
+IMAP_PORT = 993
+IMAP_USERNAME = 'evo-inc-sup@mail.ru'
+IMAP_PASSWORD = 'KTchrGp7NM6wZg1gty5R'
+
+# SMTP CONFIGURATION
+SMTP_SERVER = 'smtp.mail.ru'
+SMTP_PORT = 465 
+SMTP_USERNAME = 'evo-inc-sup@mail.ru'
+SMTP_PASSWORD = 'KTchrGp7NM6wZg1gty5R'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -1,0 +1,31 @@
+body {
+    background-color: #eee;
+}
+
+.alert-error-card {
+    border: 1px solid red;
+    background: transparent;
+}
+
+.label-link {
+    color: rgb(124, 150, 183);
+    text-decoration: none;
+    font-weight: 4px;
+    float: right;
+}
+
+.custom-button {
+    border: 1.5px solid rgb(124, 150, 183);
+    border-radius: 8px;
+}
+
+.custom-button:hover {
+    background-color: rgb(124, 150, 183);
+
+    transition: background-color 0.8s ease-in-out;
+}
+
+.list-style-none {
+    list-style: none;
+    padding: 0;
+}
