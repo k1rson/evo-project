@@ -2,6 +2,21 @@ body {
     background-color: #eee;
 }
 
+.btn-check:focus+.btn, .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25); 
+}
+
+.rounded-avatar {
+    width: 43px;
+    height: 43px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.message-container {
+    max-width: calc(100% - 50px); /* Максимальная ширина текстового контейнера */
+}
+
 .nav-brand-text {
     color: black;
     font-size: 22px;
@@ -9,17 +24,6 @@ body {
 
 .nav-brand-text:hover {
     color: black;
-}
-
-.btn-check:focus+.btn, .btn:focus {
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25); 
-}
-
-.dropdown-menu-header {
-    margin-top: -0.65rem;
-    margin-bottom: 0.65rem;
-    position: relative;
-    z-index: 6;
 }
 
 .vertical-scrollable {
@@ -38,16 +42,30 @@ body {
     opacity: .6;
 }
 
-.chat-box {
+.chat-box-left {
+    position: relative;
+    display: flex;
+    text-align: left;
+    background: #e0f3ff;
+    opacity: 1;
+    border: 0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    border-top-left-radius: 0.25rem;
+    max-width: 50%;
+    min-width: 95%;
+}
+
+.chat-box-right {
     position: relative;
     opacity: 1;
     background: #e0f3ff;
     border: 0;
     padding: 0.75rem 1.5rem;
     border-radius: 30px;
-    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     display: flex;
-    max-width: 50%;
+    max-width: 80%;
     min-width: 95%;
     text-align: left;
 }
@@ -61,4 +79,27 @@ body {
     height: 12px;
     border-radius: 50%;
     background-color: rgb(58, 196, 125); 
+}
+
+.custom-dropdown {
+    position: relative;
+}
+  
+.custom-dropdown .dropdown-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+@media (max-width: 575.98px) {
+    .main-title {
+        display: none;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .col-12 {
+        display: flex;
+        justify-content: center;
+    }
 }

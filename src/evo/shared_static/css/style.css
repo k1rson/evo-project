@@ -15,6 +15,27 @@ img {
     max-width: 100%;
 }
 
+.blur-card {
+    filter: blur(5px);
+}
+
+.dev-msg {
+    position: absolute;
+    z-index: 999;
+    top: 50%;
+    left: 50%;
+    font: bold;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgb(255, 100, 100);
+}
+
+.small-text-info {
+    text-align: center;
+    font-size: 12px;
+    margin-left: 20%;
+}
+
 .custom-a {
     color: rgb(124, 150, 183);
     text-decoration: none;

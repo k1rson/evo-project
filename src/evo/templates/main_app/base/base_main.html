@@ -8,6 +8,9 @@
     <!-- ========== Bootstrap ========== -->
     <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
 
+    <!-- ========== Chartist ========== -->
+    <link rel="stylesheet" href="{% static 'css/libraries/chartist.min.css' %}">
+
     <!-- ========== Custom ========== -->
     <link rel="icon" href="{% static 'image/svg/logo-evo-none-text.svg' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -15,106 +18,102 @@
 
     {% block css %}{% endblock css %}
 
-
     <title>{% block title %}UNKNOW - EVO{% endblock title %}</title>
 </head>
 <body>
     <!-- ========== header ========== -->
-    <nav class="navbar navbar-light bg-light shadow py-1 px-1">
-        <div class="col-2 mt-0 mb-0 mx-2">
-            <div class="d-flex justify-content-start align-items-center">
-                <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="img-fluid rounded-circle me-2" width="55px"/>
-                <a href="/" class="nav-brand-text">EVO System</a>
-            </div>
-        </div>
-
-        <div class="col-4 mt-0 mb-0 me-4 d-flex justify-content-end align-items-center">
-            <div class="me-0">
-                <div class="dropdown">
-                    <button class="btn" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{% static 'image/svg/icon-tasks.svg' %}" class="img-fluid rounded-circle" width="40px"/>
-                    </button>
-                    <div class="dropdown-menu shadow shadow-sm animate__animated animate__fadeInDown" aria-labelledby="triggerId" style="top: 61px; left: -100px; will-change: transform; position: absolute; transform: translate(-296px, 56px); width: 370px;">
-                        Задачи на сегодня
-                    </div>
-                </div>
-            </div>
-            
-            <div class="dropdown-divider-vertical"></div>
-
-            <div class="me-0">
-                <div class="dropdown">
-                    <button class="btn" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{% static 'image/svg/icon-analytics.svg' %}" class="img-fluid rounded-circle" width="40px"/>
-                    </button>
-                    <div class="dropdown-menu shadow shadow-sm animate__animated animate__fadeInDown" aria-labelledby="triggerId" style="top: 61px; left: -100px; will-change: transform; position: absolute; transform: translate(-296px, 56px); width: 370px;">
-                        Онлайн сотрудники
-                    </div>
+    <nav class="navbar bg-light p-0">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                <div class="mx-2 d-flex justify-content-start align-items-center">
+                    <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="img-fluid rounded-circle me-2" width="55px" />
+                    <a href="/" class="nav-brand-text">EVO System</a>
                 </div>
             </div>
 
-            <div class="dropdown-divider-vertical"></div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 col-xxl-8">
+                <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex justify-content-start align-items-center">
+                        <div class="dropdown mx-1">
+                            <a href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{% static 'image/svg/icon-tasks.svg' %}" class="img-fluid rounded-circle dropdown-toggle" width="40px">
+                            </a>
+    
+                            <div class="dropdown-menu animate__animated animate__fadeInDown">
+                                Задачи на сегодня
+                            </div>
+                        </div>
+    
+                        <div class="dropdown mx-2">
+                            <a href="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{% static 'image/svg/icon-analytics.svg' %}" class="img-fluid rounded-circle dropdown-toggle" width="40px">
+                            </a>
+    
+                            <div class="dropdown-menu animate__animated animate__fadeInDown">
+                                Онлайн сотрудники
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="me-3">
-                <div class="dropdown">
-                    <button class="btn" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{% static 'image/png/avatar.png' %}" class="img-fluid rounded-circle" width="40px"/>
-                        <img src="{% static 'image/svg/icon-arrow-down.svg' %}" class="img-fluid rounded-circle" width="8px"/>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-profile shadow shadow-sm animate__animated animate__fadeInDown" aria-labelledby="triggerId" style="top: 61px; left: -100px; will-change: transform; position: absolute; transform: translate(-296px, 56px); width: 370px;">
-                        <div class="dropdown-menu-header">
-                            <div class="container">
-                                <div class="row mt-3 d-flex justify-content-center align-items-center">
-                                    <div class="col-2">
-                                        <img src="{% static 'image/png/avatar.png' %}" class="rounded-circle" width="43px"/>
+                    <div class="dropdown-divider-vertical mx-2"></div>
+
+                    <div class="d-flex justify-content-start align-items-center">
+                        <div class="dropdown">
+                            <button class="btn" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ user.src_avatar.url }}" class="rounded-avatar"/>
+                                <img src="{% static 'image/svg/icon-arrow-down.svg' %}" class="img-fluid rounded-circle" width="8px"/>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-profile shadow shadow-sm animate__animated animate__fadeInDown" aria-labelledby="triggerId" style="top: 61px; left: -100px; will-change: transform; position: absolute; transform: translate(-296px, 56px); width: 360px;">
+                                <div class="dropdown-menu-header">
+                                    <div class="container d-flex justify-content-start align-items-center">
+                                        <div class="col-2 text-center">
+                                            <img src="{{ user.src_avatar.url }}" class="rounded-avatar mt-2"/>
+                                        </div>
+                                        <div class="col-8 text-center">
+                                            <p class="mb-0 mt-0">{{ user.first_name }} {{ user.last_name }}</p>
+                                            <p class="mb-0 mt-0 small text-muted">{{ user.position_id }}</p>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="{% url 'logout' %}"><button class="btn btn-sm btn-outline-secondary mt-1">Выход</button></a>
+                                        </div>
                                     </div>
-                                    <div class="col-7">
-                                        <p class="mb-0 mt-0">Иванов А.А.</p>
-                                        <p class="mb-0 mt-0 small text-muted">Руководитель отдела Editor's</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <a href="{% url 'logout' %}"><button class="btn btn-sm btn-outline-secondary">Выход</button></a>
+                                </div>
+                                <div class="container">
+                                    <div class="row d-flex justify-content-center align-items-center mt-2">
+                                        <ul class="nav nav-tabs small">
+                                            <li class="nav-item">
+                                                <a href="#profile" class="nav-link active" data-bs-toggle="tab">Карточка сотрудника</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#notifications" class="nav-link" data-bs-toggle="tab">Уведомления</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#messages" class="nav-link" data-bs-toggle="tab">Сообщения</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="profile">
+                                                <p>Карточка сотрудника</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="notifications">
+                                                <p>Уведомления для сотрудника</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="messages">
+                                                <p>Сообщения сотруднику</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="container">
-                            <div class="row d-flex justify-content-center align-items-center mt-2">
-                                <ul class="nav nav-tabs small">
-                                    <li class="nav-item">
-                                        <a href="#profile" class="nav-link active" data-bs-toggle="tab">Карточка сотрудника</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#notifications" class="nav-link" data-bs-toggle="tab">Уведомления</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#messages" class="nav-link" data-bs-toggle="tab">Сообщения</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="profile">
-                                        <p>Карточка сотрудника</p>
-                                    </div>
-                                    <div class="tab-pane fade" id="notifications">
-                                        <p>Уведомления для сотрудника</p>
-                                    </div>
-                                    <div class="tab-pane fade" id="messages">
-                                        <p>Сообщения сотруднику</p>
-                                    </div>
-                                </div>
-                            </div>
+    
+                        <div class="text-center mx-4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p class="mb-0 mt-0">{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="mb-0 mt-0 small text-muted">{{ user.position_id }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="text-center">
-                <p class="mb-0 mt-0">Иванов А.А.</p>
-                <p class="mb-0 mt-0 small text-muted">Руководитель отдела Editor's</p>
-            </div>
-        </div>
     </nav>
-
     {% block content %}{% endblock content %}
 
     <script>
@@ -125,6 +124,8 @@
     </script>
 
     <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/libraries/chartist.min.js' %}"></script>
+    <script src="{% static 'js/libraries/chart.js' %}"></script>
     <script src="{% static 'js/libraries/vue.js' %}"></script>
     <script src="{% static 'js/libraries/cookie_hook.min.js' %}"></script>
     <script src="{% static 'js/general_utils.js' %}"></script>
