@@ -1,0 +1,43 @@
+.chat-wrapper {
+    background-color: white;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.col-border {
+    border-right: 1px solid silver;
+}
+
+.badge-online-marker {
+    position: absolute;
+    border: 2px solid white;
+    margin-top: 30px;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgb(58, 196, 125); 
+}
+
+.badge-offline-marker {
+    position: absolute;
+    border: 2px solid white;
+    margin-top: 30px;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgb(217, 37, 80); 
+}
+
+
+.chat-container-hvr:hover {
+    background-color: rgb(224, 243, 255);
+    border-radius: 7px;
+}
+
+.divider-horizontal {
+    width: 100%;
+    margin: 1rem 0;
+    border-top: 1.5px solid rgba(0, 0, 0, 0.1); 
+}

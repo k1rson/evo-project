@@ -1,0 +1,267 @@
+{% extends "main_app/base/base_main.html" %}
+
+{% load static %}
+
+{% block title %}Chat - EVO{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/main_css.css' %}">
+<link rel="stylesheet" href="{% static 'css/chat_css.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-auto bg-light sticky-top">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center mt-auto">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link py-3 px-2" title="Главная страница" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-home.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Бухгалтерия" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-money-bag.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Отдел редакции" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-edit-department.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="{% url 'chat_page' %}" class="nav-link py-3 px-2" title="Общение с коллегами" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-chat.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Мониторинг серверов" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-server.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Настройки" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-settings.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link py-3 px-2" title="Выйти из аккаунта" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-exit.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm p-0 min-vh-100">
+            <!-- header main -->
+            <div class="container-fluid shadow shadow-sm p-1  main-title">
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex justify-content-start align-items-center mx-4">
+                            <img src="{% static 'image/svg/icon-employees.svg' %}" width="55px" />
+                            <div class="text-start mx-3 mt-3">
+                                <h5 class="mt-0 mb-0">Чат для общения с коллегами</h5>
+                                <p class="text-muted">Этот инструмент поможет вам поддерживать связь и общаться с вашей командой</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="mt-4">
+                <div class="container-fluid animate__animated animate__fadeIn">
+                    <div class="card" style="min-height: 780px;">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-3 col-border" style="min-height: 780px;">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="input-group input-group-sm mb-3 mt-3">
+                                            <span class="input-group-text"><img src="{% static 'image/svg/icon-search.svg' %}" width="17px"></span>
+                                            <input type="text" class="form-control" placeholder="Введите ник пользователя...">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <p class="small text-muted mb-1 me-2">Общие чаты</p>
+                                            <button class="btn btn-sm btn-outline-success me-1">Создать новый</button>
+                                            <button class="btn btn-sm btn-outline-danger">Покинуть все</button>
+                                        </div>
+                                        
+                                        <div class="mb-2">
+                                            <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
+                                                <div class="position-relative" style="flex-shrink: 0;">
+                                                    <img src="{% static 'image/svg/icon-chat.svg' %}" class="rounded-avatar" />
+                                                </div>
+        
+                                                <div class="mx-2">
+                                                    <p class="mt-0 mb-0">Отдел редакции - Общий</p>
+                                                    <p class="small text-muted"><strong>Участники</strong>: Иванов А.А., Петров Г.А, Иванчук Г.К., Селедкин Б.Б, Говоров Г.Ч., Чепалахов З.А и т.д.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <p class="small text-muted mb-1">Коллеги онлайн</p>
+        
+                                        <div class="mb-2">
+                                            <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
+                                                <div class="position-relative" style="flex-shrink: 0;">
+                                                    <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                    <span class="badge-online-marker"></span>
+                                                </div>
+        
+                                                <div class="mx-2">
+                                                    <p class="mt-0 mb-0">Иванов Олег Валентинович</p>
+                                                    <p class="small text-muted">Привет, как дела? Что там по срокам сдачи? Быть может нам стоит открыть свой бизнес по продаже Кучеров? Как считаешь?</p>
+                                                </div>
+                                            </div>
+                                            <div class="chat-container-hvr d-flex justify-content-start mb-1">
+                                                <div class="position-relative" style="flex-shrink: 0;">
+                                                    <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                    <span class="badge-online-marker"></span>
+                                                </div>
+        
+                                                <div class="mx-2">
+                                                    <p class="mt-0 mb-0">Петров Олег Геннадьевич</p>
+                                                    <p class="small text-muted">Ожидаю отчет по закупке материалов</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <p class="small text-muted mb-1">Коллеги не в сети</p>
+        
+                                        <div class="mb-2">
+                                            <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
+                                                <div class="position-relative" style="flex-shrink: 0;">
+                                                    <img src="{% static 'image/svg/icon-money-bag.svg' %}" class="rounded-avatar" />
+                                                    <span class="badge-offline-marker"></span>
+                                                </div>
+        
+                                                <div class="mx-2">
+                                                    <p class="mt-0 mb-0">Миргородский Александр Игоревич</p>
+                                                    <p class="small text-muted">Как дела?</p>
+                                                </div>
+                                            </div>
+                                            <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
+                                                <div class="position-relative" style="flex-shrink: 0;">
+                                                    <img src="{% static 'image/svg/icon-edit-department.svg' %}" class="rounded-avatar" />
+                                                    <span class="badge-offline-marker"></span>
+                                                </div>
+        
+                                                <div class="mx-2">
+                                                    <p class="mt-0 mb-0">Иванчук Гевор Абраамович</p>
+                                                    <p class="small text-muted">Слышал ты купил новую машину? Где взял кредит?</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <div class="row">
+                                        <div class="mt-2 d-flex justify-content-start">
+                                            <div class="position-relative" style="flex-shrink: 0;">
+                                                <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                <span class="badge-online-marker"></span>
+                                            </div>
+        
+                                            <div class="mx-2">
+                                                <p class="mt-0 mb-0">Иванов Олег Валентинович</p>
+                                                <p class="small text-muted">Последний раз был в сети: <strong>25 минут назад</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row p-0 position-relative" style="height: 80%; overflow: hidden;">
+                                        <ul class="list-group list-group-flush overflow-auto mt-2" style="max-height: 100%;">
+                                            <li class="list-group-item border-0 mb-2">
+                                                <div class="p-0">
+                                                    <div class="d-flex justify-content-start align-items-start">
+                                                        <div class="position-relative me-2" style="flex-shrink: 0">
+                                                            <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" width="38px" />
+                                                            <span class="online-marker"></span>
+                                                        </div>
+                                                        <div class="message-container flex-grow-1">
+                                                            <p class="m-0 chat-box-left small">
+                                                                But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                                But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mx-5 d-flex justify-content-start align-items-center">
+                                                        <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
+                                                        <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня | Иванов А.А.</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item border-0 mb-2">
+                                                <div class="p-0">
+                                                    <div class="d-flex justify-content-center align-items-start">
+                                                        <p class="m-0 chat-box-right small">
+                                                            But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                            But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
+                                                        </p>
+                                                        <div class="position-relative me-2" style="flex-shrink: 0">
+                                                            <img src="{% static 'image/svg/icon-plain.svg' %}" width="38px" />
+                                                            <span class="online-marker"></span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mx-5 d-flex justify-content-end align-items-center">
+                                                        <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
+                                                        <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня | Петров И.А.</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="divider-horizontal"></div>
+
+                                    <div class="row">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="input-group flex-nowrap">
+                                                <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
+                                                <input type="text" class="form-control" placeholder="Напишите что-нибудь...">
+        
+                                                <button class="btn btn-sm btn-outline-success mx-2">Отправить</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <div class="container-fluid">
+                <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                    <p class="col-md-4 mb-0 text-body-secondary mt-4">© 2023 HardWorking, Inc</p>
+                    <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mt-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" width="50px">
+                    </a>
+                    <ul class="nav col-md-4 mt-3 justify-content-end">
+                    </ul>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

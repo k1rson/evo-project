@@ -9,6 +9,8 @@ urlpatterns = [
 
     path('', include('apps.main_app.urls')), 
     path('auth/', include('apps.authentication_app.urls')),
+    path('chat/', include('apps.chat_app.urls')),
+
     path('api/v1/', include('api.v1.urls')),
 ]
 

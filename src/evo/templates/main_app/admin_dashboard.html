@@ -35,6 +35,14 @@
                     <div class="dropdown-divider-horizontal"></div>
 
                     <li class="nav-item">
+                        <a href="{% url 'chat_page' %}" class="nav-link py-3 px-2" title="Общение с коллегами" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-chat.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
                         <a href="#" class="nav-link py-3 px-2" title="Мониторинг серверов" data-bs-toggle="tooltip" data-bs-placement="right">
                             <img src="{% static 'image/svg/icon-server.svg' %}" width="30px"/>
                         </a>
@@ -57,7 +65,7 @@
         </div>
         <div class="col-sm p-0 min-vh-100">
             <!-- header main -->
-            <div class="container-fluid shadow shadow-sm p-1  main-title">
+            <div class="container-fluid shadow shadow-sm p-1 main-title">
                 <div class="row">
                     <div class="col">
                         <div class="d-flex justify-content-start align-items-center mx-4">
@@ -76,12 +84,11 @@
                 <div class="container-fluid mb-2">
                     <div class="row d-flex justify-content-center align-items-center">
                         <div class="col-sm-12 col-lg-6 mb-2" >
-
-                            <div class="card card--skeleton animate__animated animate__slideInLeft" style="min-height: 500px;">
+                            <div id="chat-app" class="card animate__animated animate__slideInLeft" style="min-height: 500px;">
                                 <div class="card-header">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <img src="{% static 'image/svg/icon-chat.svg' %}" class="me-2 img-cont" width="30px" />
+                                            <img src="{% static 'image/svg/icon-chat.svg' %}" class="me-2" width="30px" />
                                             <p class="m-0">Чат с коллегами</p>
                                         </div>
                                         <img src="{% static 'image/svg/icon-settings.svg' %}" class="me-2" width="25px" />
@@ -90,69 +97,7 @@
 
                                 <div class="card-body p-0 position-relative" style="height: 200px; overflow: hidden;">
                                     <ul class="list-group list-group-flush overflow-auto h-100 w-100" style="max-height: 100%;">
-                                        <li class="list-group-item border-0 mb-2">
-                                            <div class="p-0">
-                                                <div class="d-flex justify-content-start align-items-start">
-                                                    <div class="position-relative me-2" style="flex-shrink: 0">
-                                                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" width="38px" />
-                                                        <span class="online-marker"></span>
-                                                    </div>
-                                                    <div class="message-container flex-grow-1">
-                                                        <p class="m-0 chat-box-left small">
-                                                            But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
-                                                            But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="mx-5 d-flex justify-content-start align-items-center">
-                                                    <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
-                                                    <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня | Иванов А.А.</p>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="list-group-item border-0 mb-2">
-                                            <div class="p-0">
-                                                <div class="d-flex justify-content-center align-items-start">
-                                                    <p class="m-0 chat-box-right small">
-                                                        But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
-                                                        But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
-                                                    </p>
-                                                    <div class="position-relative me-2" style="flex-shrink: 0">
-                                                        <img src="{% static 'image/svg/icon-plain.svg' %}" width="38px" />
-                                                        <span class="online-marker"></span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="mx-5 d-flex justify-content-end align-items-center">
-                                                    <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
-                                                    <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня | Петров И.А.</p>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="list-group-item border-0 mb-2">
-                                            <div class="p-0">
-                                                <div class="d-flex justify-content-start align-items-start">
-                                                    <div class="position-relative me-2" style="flex-shrink: 0">
-                                                        <img src="{% static 'image/svg/icon-notifications.svg' %}" width="38px" />
-                                                        <span class="online-marker"></span>
-                                                    </div>
-                                                    <div class="message-container flex-grow-1">
-                                                        <p class="m-0 chat-box-left small">
-                                                            But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
-                                                            But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="mx-5 d-flex justify-content-start align-items-center">
-                                                    <img src="{% static 'image/svg/icon-calendar.svg' %}" width="15px">
-                                                    <p class="m-0 mx-1 small text-start" style="opacity: .6;">0:33 | Сегодня | Голиков П.Г.</p>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        <chat-message v-for="message in messages" :key="message.id" :message="message"></chat-message>
                                     </ul>
                                 </div>
 
@@ -160,9 +105,8 @@
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="input-group flex-nowrap">
                                             <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
-                                            <input type="text" class="form-control" placeholder="Напишите что-нибудь...">
-    
-                                            <button class="btn btn-sm btn-outline-success mx-2">Отправить</button>
+                                            <input v-model="form_message" type="text" class="form-control" placeholder="Напишите что-нибудь..." @keydown.enter="send_message">
+                                            <button class="btn btn-sm btn-outline-success mx-2" @click="send_message">Отправить</button>
                                         </div>
                                     </div>
                                 </div>

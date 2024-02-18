@@ -8,6 +8,7 @@ SECRET_KEY = 'django-insecure-$hme!($7oxy#kl1la-xd=@&d@90&%u!_exm*z(5q%da_&d683!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+ASGI_APPLICATION = 'evo.asgi.application'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,9 +19,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', 
     'rest_framework.authtoken',
+    'channels',
     'apps.authentication_app.apps.AuthenticationAppConfig',
     'apps.mail_client_app.apps.MailClientAppConfig', 
-    'apps.main_app.apps.MainAppConfig'
+    'apps.main_app.apps.MainAppConfig', 
+    'apps.chat_app.apps.ChatAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -105,6 +108,17 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]
+}
+
+# DJANGO CHANNELS CONFIG
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Используйте это для разработки
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',  # Используйте это для боевого использования
+        # 'CONFIG': {
+        #     "hosts": [('127.0.0.1', 6379)],  # Настройте соединение с вашим Redis-сервером
+        # },
+    },
 }
 
 # EMAIL CONFING
