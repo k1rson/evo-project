@@ -25,24 +25,3 @@ def reset_password_user(user) -> bool:
         return False
     
     return True 
-    
-def create_response(status, message=None) -> Response:
-    """
-        Создает объект Response с заданным статусом и сообщением.
-
-        :param status: Статус сформированного ответа -> успешно/ошибка
-        :param message: Сообщение, описывающее ошибку, в случае, если ответ сформирован неудачно
-
-        :return: Объект типа Response
-    """
-    if status == 'error':
-        data = {
-            'status': 'error',
-            'err_msg': message 
-        }
-    else:
-        data = {
-            'status': 'success'
-        }
-
-    return Response(data=data)

@@ -7,31 +7,40 @@ from rest_framework.views import APIView
 
 from apps.authentication_app.models import CustomUser
 
-from constants import error_messages, status_response
+from constants import error_messages
 from .serializer import AuthorizationUserSerializer, ResetPasswordSerializer
-from .utils import reset_password_user, create_response
+from .utils import reset_password_user
 
 class AuthorizationUserAPI(APIView):
     def post(self, request):
         serializer = AuthorizationUserSerializer(data=request.data)
         if not serializer.is_valid():
-            return create_response(status_response.ERROR, error_messages.ERROR_USER_NOT_FOUND)
+            return Response(data={
+                'success': False,
+                'err_msg': error_messages.ERROR_AUTH_APP_INCORRECT_DATA
+            }, status=status.HTTP_200_OK)
 
-        username = serializer.validated_data['username']
-        password = serializer.validated_data['password']
+        username = serializer.validated_data.get('username')
+        password = serializer.validated_data.get('password')
 
         if not (username and password): 
-            return create_response(status_response.ERROR, error_messages.ERROR_USER_NOT_FOUND)
+            return Response(data={
+                'success': False, 
+                'err_msg': error_messages.ERROR_AUTH_APP_INCORRECT_DATA
+            }, status=status.HTTP_200_OK)
 
         user = authenticate(request=request, username=username, password=password)
         if user is None: 
-            return create_response(status_response.ERROR, error_messages.ERROR_USER_NOT_FOUND)
+            return Response(data={
+                'success': False,
+                'err_msg': error_messages.ERROR_AUTH_APP_USER_NOT_FOUND_OR_DEACTIVATE
+            }, status=status.HTTP_200_OK)
         
         login(request, user)
         token, created = Token.objects.get_or_create(user=user)
         
         return Response(data={
-            'status': status_response.SUCCESS, 
+            'success': True, 
             'token': token.key,
             'created_at': token.created,
             'is_a_new_token': created
@@ -41,17 +50,26 @@ class ResetPasswordUserAPI(APIView):
     def post(self, request): 
         serializer = ResetPasswordSerializer(data=request.data)
         if not serializer.is_valid():
-            return create_response(status_response.ERROR, error_messages.ERROR_USER_INVALID_EMAIL)
+            return Response(data={
+                'success': False, 
+                'err_msg': error_messages.ERROR_AUTH_APP_INVALID_EMAIL
+            })
 
-        email = serializer.validated_data['email']
+        email = serializer.validated_data.get('email')
         try: 
             user = CustomUser.objects.get(email=email)
             if not user.is_verified_email: 
-                return create_response(status_response.ERROR, error_messages.ERROR_USER_NOT_VERIFIED_EMAIL)
+                return Response(data={
+                    'success': False, 
+                    'err_msg': error_messages.ERROR_AUTH_APP_NOT_VERIFIED_EMAIL
+                })
             
             # send otp
             result = reset_password_user(user=user)
+            ...
             
-            return create_response(status_response.SUCCESS)
         except CustomUser.DoesNotExist:
-            return create_response(status_response.ERROR, error_messages.ERROR_USER_NOT_FOUND_EMAIL)
+            return Response(data={
+                'success': False, 
+                'err_msg': error_messages.ERROR_AUTH_APP_USER_WITH_CURRENT_EMAIL_NOT_FOUND
+            })

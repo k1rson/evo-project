@@ -85,7 +85,9 @@
                     <div class="card" style="min-height: 780px;">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-3 col-border" style="min-height: 780px;">
+
+                                <!-- left bar -->
+                                <div id="left-bar-app" class="col-3 col-border" style="min-height: 780px;">
                                     <div class="row d-flex justify-content-center">
                                         <div class="input-group input-group-sm mb-3 mt-3">
                                             <span class="input-group-text"><img src="{% static 'image/svg/icon-search.svg' %}" width="17px"></span>
@@ -100,16 +102,9 @@
                                         </div>
                                         
                                         <div class="mb-2">
-                                            <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
-                                                <div class="position-relative" style="flex-shrink: 0;">
-                                                    <img src="{% static 'image/svg/icon-chat.svg' %}" class="rounded-avatar" />
-                                                </div>
-        
-                                                <div class="mx-2">
-                                                    <p class="mt-0 mb-0">Отдел редакции - Общий</p>
-                                                    <p class="small text-muted"><strong>Участники</strong>: Иванов А.А., Петров Г.А, Иванчук Г.К., Селедкин Б.Б, Говоров Г.Ч., Чепалахов З.А и т.д.</p>
-                                                </div>
-                                            </div>
+                                            <chat-room v-for="chat_room in chat_rooms" :key="chat_room.id" :chat_room="chat_room">
+                                                
+                                            </chat-room>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -169,6 +164,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- right bar -->
                                 <div class="col-9">
                                     <div class="row">
                                         <div class="mt-2 d-flex justify-content-start">
@@ -264,4 +261,5 @@
 {% endblock content %}
 
 {% block scripts %}
+<script src="{% static 'js/chat_app_vue.js' %}"></script>
 {% endblock scripts %}

@@ -11,12 +11,6 @@ class AuthLoginPageView(RedirectAuthenticatedUserMixin, View):
     def get(self, request):
         return render(request, template_name=self.template_name)
     
-class AuthRegistrPageView(RedirectAuthenticatedUserMixin, View):
-    template_name = 'authentication_app/registr.html'
-
-    def get(self, request):
-        return render(request, template_name=self.template_name)
-    
 class ResetPasswordPageView(RedirectAuthenticatedUserMixin, View):
     template_name = 'authentication_app/reset_password.html'
 
@@ -24,7 +18,11 @@ class ResetPasswordPageView(RedirectAuthenticatedUserMixin, View):
         return render(request, template_name=self.template_name)
     
 class LogoutUserView(View):
-    def get(self, request): 
+    def get(self, request):
+        response = redirect('auth_page')
+        response.delete_cookie('token')
+        response.delete_cookie('sessionid')
+
         logout(request)
 
-        return redirect('auth_page')
+        return response
