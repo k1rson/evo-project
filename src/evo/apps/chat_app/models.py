@@ -9,7 +9,7 @@ class ChatRoomModel(models.Model):
 
     def __str__(self) -> str:
         return f'{self.room_name}'
-
+    
     class Meta:
         verbose_name = 'Общий чат'
         verbose_name_plural = 'Общие чаты'
@@ -21,6 +21,18 @@ class UserChatRoomModel(models.Model):
     class Meta:
         verbose_name = 'Связь общих чатов и пользователей'
         verbose_name_plural = 'Связь общих чатов и пользователей'
+
+class ChatRoomInvitationModel(models.Model):
+    room = models.ForeignKey(ChatRoomModel, verbose_name="Чат", on_delete=models.CASCADE, db_index=True)
+    inviting_user = models.ForeignKey(CustomUser, verbose_name='Пригласивший пользователь', on_delete=models.CASCADE, related_name='invitations_sent')
+    invited_user = models.ForeignKey(CustomUser, verbose_name='Приглашаемый пользователь', on_delete=models.CASCADE, related_name='invitations_received')
+
+    def __str__(self) -> str:
+        return f'{self.room} {self.inviting_user} {self.invited_user}'
+
+    class Meta:
+        verbose_name = 'Приглашение на вступление в чат'
+        verbose_name_plural = 'Приглашения на вступление в чат'
 
 class MessageModel(models.Model):
     sender_id = models.ForeignKey(CustomUser, verbose_name='Отправитель', related_name='sent_messages', on_delete=models.CASCADE, db_index=True)

@@ -6,8 +6,8 @@ from .managers import CustomUserManager
 class UserPositionModel(models.Model):
     position_name = models.CharField('Название должности', max_length=100)
 
-    def __str__(self):
-        return self.position_name
+    def __str__(self) -> str:
+        return f'{self.position_name}'
 
     class Meta:
         verbose_name_plural = 'Должности'
@@ -31,5 +31,5 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-    def __str__(self):
-        return self.email
+    def __str__(self) -> str:
+        return f'{self.username} / {self.email}'

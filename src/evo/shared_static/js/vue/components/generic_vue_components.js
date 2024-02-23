@@ -48,21 +48,3 @@ Vue.component('validate-card', {
                 
     `
 })
-
-// chat app components
-Vue.component('chat-room', {
-    props: ['chat_room'],
-    delimiters: ['[[', ']]'],
-    template: `
-    <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
-        <div class="position-relative" style="flex-shrink: 0;">
-            <img :src="chat_room.room_avatar" class="rounded-avatar" />
-        </div>
-
-        <div class="mx-2">
-            <p class="mt-0 mb-0">[[ chat_room.room_name ]]</p>
-            <p class="small text-muted"><strong>Участники</strong>: [[ chat_room.participants.join(', ') ]]</p>
-        </div>
-    </div> 
-    `
-})

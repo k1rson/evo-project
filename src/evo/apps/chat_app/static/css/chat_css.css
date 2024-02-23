@@ -30,7 +30,6 @@
     background-color: rgb(217, 37, 80); 
 }
 
-
 .chat-container-hvr:hover {
     background-color: rgb(224, 243, 255);
     border-radius: 7px;
@@ -40,4 +39,13 @@
     width: 100%;
     margin: 1rem 0;
     border-top: 1.5px solid rgba(0, 0, 0, 0.1); 
+}
+
+.fade-enter-active, .fade-leave-active {
+    animation: fadeOut 0.5s;
+  }
+  
+  /* Начальное состояние анимации */
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }
