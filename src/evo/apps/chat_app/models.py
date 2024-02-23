@@ -9,7 +9,7 @@ class ChatRoomModel(models.Model):
 
     def __str__(self) -> str:
         return f'{self.room_name}'
-
+    
     class Meta:
         verbose_name = 'Общий чат'
         verbose_name_plural = 'Общие чаты'

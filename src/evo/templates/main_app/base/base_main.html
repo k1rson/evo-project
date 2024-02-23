@@ -14,8 +14,7 @@
     <!-- ========== Custom ========== -->
     <link rel="icon" href="{% static 'image/svg/logo-evo-none-text.svg' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/skeleton.css' %}">
-
+    
     {% block css %}{% endblock css %}
 
     <title>{% block title %}UNKNOW - EVO{% endblock title %}</title>
@@ -115,6 +114,19 @@
             </div>
     </nav>
     {% block content %}{% endblock content %}
+
+    <!-- alert danger toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1060">
+        <div id="toast-el" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <img src="{% static 'image/svg/icon-danger-alert.svg' %}" class="rounded me-2" width="26px">
+            <strong class="me-auto">Уведомление</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toast-message">
+          </div>
+        </div>
+    </div>
 
     <script>
         // Предотвращаем закрытие dropdown при клике на внутренние элементы
