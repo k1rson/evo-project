@@ -9,6 +9,9 @@ from .utils import check_image
 class ChatRoomSerializer(serializers.ModelSerializer):
     """Сериализатор для представления общих чатов в системе"""
     room_owner = serializers.SerializerMethodField()
+class ChatRoomSerializer(serializers.ModelSerializer):
+    """Сериализатор для представления общих чатов в системе"""
+    room_owner = serializers.SerializerMethodField()
     participants = serializers.SerializerMethodField()
 
     class Meta:

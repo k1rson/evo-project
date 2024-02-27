@@ -170,6 +170,8 @@ const chat_rooms_app = new Vue({
     methods: {
         // functions for fething chat rooms
         fetch_chat_rooms(url, callback){
+        // functions for fething chat rooms
+        fetch_chat_rooms(url, callback){
             fetch(url, {
                 method: 'GET', 
                 headers: {
