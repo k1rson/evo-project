@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('username', 'email', 'is_staff', 'is_active',)
 
     fieldsets = (
-        ('Общие данные', {'fields': ('username', 'email', 'password', 'src_avatar', 'first_name', 'last_name')}),
+        ('Общие данные', {'fields': ('username', 'email', 'password', 'src_avatar', 'first_name', 'last_name', 'is_online', 'last_activity')}),
         ('Спец. информация', {'fields': ('is_verified_email', 'role', 'position_id')}),
         ('Права администратора', {'fields': ('is_staff', 'is_active')}),
     )

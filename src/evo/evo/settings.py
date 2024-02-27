@@ -34,6 +34,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'apps.chat_app.middleware.UpdateUserActivityMiddleware'
 ]
 
 ROOT_URLCONF = 'evo.urls'
@@ -134,5 +136,8 @@ SMTP_SERVER = 'smtp.mail.ru'
 SMTP_PORT = 465 
 SMTP_USERNAME = 'evo-inc-sup@mail.ru'
 SMTP_PASSWORD = 'KTchrGp7NM6wZg1gty5R'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

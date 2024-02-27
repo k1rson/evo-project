@@ -255,12 +255,13 @@
 
                                     <!-- employees app -->
                                     <div id="employees-app" class="row">
+                                        
                                         <!-- online friends -->
                                         <div class="row">
                                             <p class="small text-muted mb-1">Коллеги онлайн</p>
 
                                             <div class="mb-2">
-                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
+                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1" style="cursor: default;">
                                                     <div class="position-relative" style="flex-shrink: 0;">
                                                         <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
                                                         <span class="badge-online-marker"></span>
@@ -271,30 +272,14 @@
                                                         <p class="small text-muted">Привет, как дела? Что там по срокам сдачи? Быть может нам стоит открыть свой бизнес по продаже Кучеров? Как считаешь?</p>
                                                     </div>
                                                 </div>
-                                                <div class="chat-container-hvr d-flex justify-content-start mb-1">
-                                                    <div class="position-relative" style="flex-shrink: 0;">
-                                                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
-                                                        <span class="badge-online-marker"></span>
-                                                    </div>
-
-                                                    <div class="mx-2">
-                                                        <p class="mt-0 mb-0">Петров Олег Геннадьевич</p>
-                                                        <p class="small text-muted">Ожидаю отчет по закупке материалов</p>
-                                                    </div>
-                                                </div>
-
-                                                
                                             </div>
-
-                                            
                                         </div>
 
                                         <!-- offline friends -->
                                         <div class="row">
                                             <p class="small text-muted mb-1">Коллеги не в сети</p>
-
                                             <div class="mb-2">
-                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
+                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1" style="cursor: default;">
                                                     <div class="position-relative" style="flex-shrink: 0;">
                                                         <img src="{% static 'image/svg/icon-money-bag.svg' %}" class="rounded-avatar" />
                                                         <span class="badge-offline-marker"></span>
@@ -305,24 +290,12 @@
                                                         <p class="small text-muted">Как дела?</p>
                                                     </div>
                                                 </div>
-                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1">
-                                                    <div class="position-relative" style="flex-shrink: 0;">
-                                                        <img src="{% static 'image/svg/icon-edit-department.svg' %}" class="rounded-avatar" />
-                                                        <span class="badge-offline-marker"></span>
-                                                    </div>
-
-                                                    <div class="mx-2">
-                                                        <p class="mt-0 mb-0">Иванчук Гевор Абраамович</p>
-                                                        <p class="small text-muted">Слышал ты купил новую машину? Где взял кредит?</p>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- right bar -->
-                                <div id="chat-room-app" class="col-9">
                                 <div id="chat-room-app" class="col-9">
                                     <div class="row">
                                         <div class="mt-2 d-flex justify-content-start">
@@ -401,7 +374,6 @@
                 </div>
             </main>
 
-            <!-- footer -->
             <!-- footer -->
             <div class="container-fluid">
                 <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
