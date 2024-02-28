@@ -157,9 +157,9 @@ const chat_rooms_app = new Vue({
             show_empty_shared_chat_rooms: false,
             show_empty_invititaion: false, 
 
-            toggle_invitation_chats: true, 
+            toggle_invitation_chats: false, 
             toggle_user_chats: true, 
-            toggle_shared_chats: true
+            toggle_shared_chats: false
         }
     }, 
     mounted(){
@@ -270,7 +270,62 @@ const employees_app = new Vue({
     delimiters: ['[[', ']]'],
     data(){
         return{
-            
+            employees: [],
+        }
+    }, 
+    mounted(){
+        this.fetch_employees();
+    },
+    methods: {
+        fetch_employees(){
+            const url = `/api/v1/chat-room-api/employees`;
+
+            fetch(url, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json', 
+                    'Authorization': `Token ${Cookies.get('token')}`,
+                    'Cookie': `csrf_token=${Cookies.get('csrf_token')}`
+                }
+                })
+                .then(check_response)
+                .then(response => {
+                    if(!response.success){
+                        call_toast(`Ошибка: ${response.err_msg}`)
+                        return;
+                    }
+                    this.employees = response.employees;
+                })
+                .catch(error => {
+                    call_toast(`Ошибка сервера: ${error} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
+                })
+        }, 
+        update_user_status(){
+
         }
     }
 })
+
+// ws
+const ws = new WebSocket(`ws://${window.location.host}/ws/update-status/`);
+ws.onmessage = (event) => {
+    const event_data = JSON.parse(event.data);
+    if (event_data.type === 'set_online_status_user') {
+
+        const index = employees_app.employees.findIndex(user => user.id === event_data.active_user_id);
+        if (index !== -1) {
+            employees_app.employees[index].is_online = true;
+        }
+
+    } else if (event_data.type === 'set_offline_status_user') {
+
+        event_data.inactive_users_ids.forEach(inactive_user_id => {
+            const index = employees_app.employees.findIndex(user => user.id === inactive_user_id);
+            if (index !== -1) {
+                employees_app.employees[index].is_online = false;
+            }
+        });
+
+    }
+};

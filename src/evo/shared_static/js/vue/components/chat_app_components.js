@@ -90,3 +90,24 @@ Vue.component('search-user-card', {
     </div>
     `
 })
+
+Vue.component('employee', {
+    props: ['employee'],
+    delimiters: ['[[', ']]'],
+    template: `
+    <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1 animate__animated animate__fadeInDown" style="cursor: default;">
+        <div class="position-relative" style="flex-shrink: 0;">
+            <img :src="employee.src_avatar" class="rounded-avatar" />
+            <span v-bind:class="{ 'badge-online-marker': employee.is_online, 'badge-offline-marker': !employee.is_online }"></span>
+        </div>
+
+        <div class="mx-2">
+            <p class="mt-0 mb-0">[[ employee.last_name ]] [[ employee.first_name ]] 
+            <span v-show="!employee.is_online" class="badge bg-danger animate__animated animate__fadeInRight">Был в сети: [[ employee.last_activity ]]</span>
+            <span v-show="employee.is_online" class="badge bg-success animate__animated animate__fadeInRight">В сети</span>
+            </p>
+            <p class="small text-muted">Last Message In This Chat</p>
+        </div>
+    </div>
+    `
+})

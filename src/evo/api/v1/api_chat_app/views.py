@@ -1,9 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions, authentication, status, parsers
-
-from django.db.models import Q
-from rest_framework import permissions, authentication, status, parsers
+from rest_framework import permissions, authentication, status
 
 from django.db.models import Q
 
@@ -11,7 +8,7 @@ from apps.authentication_app.models import CustomUser
 from apps.chat_app.models import ChatRoomModel, UserChatRoomModel, ChatRoomInvitationModel
 
 from constants import error_messages 
-from .serializer import ChatRoomSerializer, ChatRoomActionsSerializer, SearchTargetUserSerializer, InvitationChatRoomSerializer
+from .serializer import ChatRoomSerializer, ChatRoomActionsSerializer, SearchTargetUserSerializer, InvitationChatRoomSerializer, EmployeeSerializer
 
 class SharedChatRoomsAPI(APIView):
     """Получение всех общих чатов (только тех, в которых не находится пользователь)"""
@@ -21,6 +18,8 @@ class SharedChatRoomsAPI(APIView):
 
     def get(self, request):
         current_user = request.user
+
+        
 
         excluded_rooms_ids = UserChatRoomModel.objects.filter(user_id=current_user.id).values_list('room_id', flat=True)
         shared_chat_rooms = ChatRoomModel.objects.exclude(id__in=excluded_rooms_ids)
@@ -173,4 +172,25 @@ class SearchTargetUserAPI(APIView):
         return Response(data={
             'success': True,
             'searched_users': serializer.data
+        }, status=status.HTTP_200_OK)
+    
+class EmployeeAPI(APIView):
+    """Получение сотрудников"""
+
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request): 
+        employees = CustomUser.objects.all().exclude(id=request.user.id)
+
+        serializer = EmployeeSerializer(employees, many=True)
+        if not serializer.data:
+            return Response(data={
+                'success': False, 
+                'err_msg': error_messages.ERROR_CHAT_EMPLOYEES_NOT_FOUND
+            }, status=status.HTTP_200_OK)
+        
+        return Response(data={
+            'success': True, 
+            'employees': serializer.data
         }, status=status.HTTP_200_OK)

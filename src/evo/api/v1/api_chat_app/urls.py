@@ -10,4 +10,6 @@ urlpatterns = [
     path('chat-room-actions', views.ChatRoomActionsAPI.as_view(), name='chat_room_actions'),
 
     path('search-target-user/', views.SearchTargetUserAPI.as_view(), name='search_target_user'),
+
+    path('employees', views.EmployeeAPI.as_view(), name='employees'),
 ]

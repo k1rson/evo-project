@@ -6,7 +6,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.routing import ProtocolTypeRouter
 from channels.auth import AuthMiddlewareStack
 
-import apps.main_app.routing
+import apps.chat_app.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'evo.settings')
 
@@ -14,7 +14,7 @@ application = ProtocolTypeRouter({
     'http': get_asgi_application(),
     'websocket': AuthMiddlewareStack(
         URLRouter(
-            apps.main_app.routing.websocket_urlpatterns
+            apps.chat_app.routing.websocket_urlpatterns
         )
     )
 })

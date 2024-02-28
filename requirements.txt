@@ -94,5 +94,11 @@ tzdata==2023.4
 zope-interface==6.2
     # via twisted
 
+channels-redis==4.2.0
+    # via twisted
+
+humanize==4.9.0
+    # via twisted
+
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

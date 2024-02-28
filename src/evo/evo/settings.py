@@ -11,6 +11,7 @@ ALLOWED_HOSTS = ['*']
 ASGI_APPLICATION = 'evo.asgi.application'
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,7 +62,7 @@ WSGI_APPLICATION = 'evo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'evo-db',
+        'NAME': 'evo',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
@@ -115,16 +116,14 @@ REST_FRAMEWORK = {
 # DJANGO CHANNELS CONFIG
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Используйте это для разработки
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',  # Используйте это для боевого использования
-        # 'CONFIG': {
-        #     "hosts": [('127.0.0.1', 6379)],  # Настройте соединение с вашим Redis-сервером
-        # },
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
     },
 }
 
 # EMAIL CONFING
-
 # IMAP CONFIGURATION
 IMAP_SERVER = 'imap.mail.ru'
 IMAP_PORT = 993
@@ -137,7 +136,8 @@ SMTP_PORT = 465
 SMTP_USERNAME = 'evo-inc-sup@mail.ru'
 SMTP_PASSWORD = 'KTchrGp7NM6wZg1gty5R'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY CONFIG
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -27,7 +27,7 @@ class CustomUser(AbstractUser):
     role = models.CharField('Роль пользователя', max_length=255, choices=ROLE_CHOICES)
     position_id = models.ForeignKey(UserPositionModel, verbose_name='Должность пользователя', on_delete=models.CASCADE, null=True, related_name='users')
     last_activity = models.DateTimeField('Последняя активность (timezone)', default=timezone.now)
-    is_online = models.BooleanField('Онлайн')
+    is_online = models.BooleanField('Онлайн', default=False)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ['email']

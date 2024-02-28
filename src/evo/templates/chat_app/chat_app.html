@@ -256,40 +256,16 @@
                                     <!-- employees app -->
                                     <div id="employees-app" class="row">
                                         
-                                        <!-- online friends -->
-                                        <div class="row">
-                                            <p class="small text-muted mb-1">Коллеги онлайн</p>
+                                        <!-- employees -->
+                                        <div>
+                                            <p class="small text-muted mb-1">Сотрудники</p>
 
                                             <div class="mb-2">
-                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1" style="cursor: default;">
-                                                    <div class="position-relative" style="flex-shrink: 0;">
-                                                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
-                                                        <span class="badge-online-marker"></span>
-                                                    </div>
-
-                                                    <div class="mx-2">
-                                                        <p class="mt-0 mb-0">Иванов Олег Валентинович</p>
-                                                        <p class="small text-muted">Привет, как дела? Что там по срокам сдачи? Быть может нам стоит открыть свой бизнес по продаже Кучеров? Как считаешь?</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- offline friends -->
-                                        <div class="row">
-                                            <p class="small text-muted mb-1">Коллеги не в сети</p>
-                                            <div class="mb-2">
-                                                <div class="chat-container-hvr d-flex justify-content-start mt-2 mb-1" style="cursor: default;">
-                                                    <div class="position-relative" style="flex-shrink: 0;">
-                                                        <img src="{% static 'image/svg/icon-money-bag.svg' %}" class="rounded-avatar" />
-                                                        <span class="badge-offline-marker"></span>
-                                                    </div>
-
-                                                    <div class="mx-2">
-                                                        <p class="mt-0 mb-0">Миргородский Александр Игоревич</p>
-                                                        <p class="small text-muted">Как дела?</p>
-                                                    </div>
-                                                </div>
+                                                <employee
+                                                    v-for="employee in employees"
+                                                    :key="employee.id"
+                                                    :employee="employee">
+                                                </employee>
                                             </div>
                                         </div>
                                     </div>

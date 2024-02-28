@@ -1,3 +1,5 @@
+import humanize, humanize.i18n
+
 from rest_framework import serializers
 from drf_extra_fields.fields import Base64ImageField
 
@@ -123,3 +125,15 @@ class SearchTargetUserSerializer(serializers.ModelSerializer):
 
     def get_src_avatar(self, obj):
         return obj.src_avatar.url
+    
+class EmployeeSerializer(serializers.ModelSerializer):
+    """Сериализатор для представления получения онлайн/оффлайн пользователей"""
+    last_activity = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'last_name', 'first_name', 'is_online', 'src_avatar', 'last_activity']
+
+    def get_last_activity(self, instance):
+        _t = humanize.i18n.activate("ru_RU")
+        return humanize.naturaltime(instance.last_activity)
