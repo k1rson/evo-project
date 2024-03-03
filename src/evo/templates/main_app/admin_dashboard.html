@@ -13,6 +13,8 @@
 
 <div class="container-fluid">
     <div class="row">
+
+        <!-- aside bar -->
         <div class="col-sm-auto bg-light sticky-top">
             <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center mt-auto">
@@ -39,12 +41,30 @@
                             <img src="{% static 'image/svg/icon-chat.svg' %}" width="30px"/>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#"class="nav-link py-3 px-2" title="Каналы предприятия" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-channels.svg' %}" width="30px"/>
+                        </a>
+                    </li>
 
                     <div class="dropdown-divider-horizontal"></div>
 
                     <li class="nav-item">
                         <a href="#" class="nav-link py-3 px-2" title="Мониторинг серверов" data-bs-toggle="tooltip" data-bs-placement="right">
                             <img src="{% static 'image/svg/icon-server.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Система логирования" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-log-system.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Файловое хранилище" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-cloud-file.svg' %}" width="30px"/>
                         </a>
                     </li>
 
@@ -63,6 +83,7 @@
                 </ul>
             </div>
         </div>
+        
         <div class="col-sm p-0 min-vh-100">
             <!-- header main -->
             <div class="container-fluid shadow shadow-sm p-1 main-title">

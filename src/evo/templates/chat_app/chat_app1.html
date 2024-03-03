@@ -1,0 +1,476 @@
+{% extends "main_app/base/base_main.html" %}
+
+{% load static %}
+
+{% block title %}Chat - EVO{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/main_css.css' %}">
+<link rel="stylesheet" href="{% static 'css/chat_css.css' %}">
+{% endblock css %}
+
+{% block content %}
+{% csrf_token %}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- aside -->
+        <div class="col-sm-auto bg-light sticky-top">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center mt-auto">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link py-3 px-2" title="Главная страница" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-home.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Бухгалтерия" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-money-bag.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Отдел редакции" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-edit-department.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="{% url 'chat_page' %}" class="nav-link py-3 px-2" title="Общение с коллегами" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-chat.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"class="nav-link py-3 px-2" title="Каналы предприятия" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-channels.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Мониторинг серверов" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-server.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Система логирования" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-log-system.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Файловое хранилище" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-cloud-file.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+
+                    <div class="dropdown-divider-horizontal"></div>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link py-3 px-2" title="Настройки" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-settings.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link py-3 px-2" title="Выйти из аккаунта" data-bs-toggle="tooltip" data-bs-placement="right">
+                            <img src="{% static 'image/svg/icon-exit.svg' %}" width="30px"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- main -->
+        <div class="col-sm p-0 min-vh-100">
+            <!-- header main -->
+            <div class="container-fluid shadow shadow-sm p-1  main-title">
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex justify-content-start align-items-center mx-4">
+                            <img src="{% static 'image/svg/icon-employees.svg' %}" width="55px" />
+                            <div class="text-start mx-3 mt-3">
+                                <h5 class="mt-0 mb-0">Чат для общения с коллегами</h5>
+                                <p class="text-muted">Этот инструмент поможет вам поддерживать связь и общаться с вашей командой</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="mt-4">
+                <div class="container-fluid">
+                    <div class="container-fluid bg-light shadow animate__animated animate__fadeIn" style="background-clip: border-box; border: 1px solid rgba(0,0,0,.125);">
+                        <div class="row">
+                            <!-- на md остановиться LEFT BAR -->
+                            <div class="col-6 ol-md-6 col-lg-5 col-xl-4 col-xxl-3 d-flex flex-column col-border" style="min-height: 750px;">
+
+                                <!-- СЕКЦИЯ ДЕЙСТВИЙ -> создание чатов, каналов, выход и т.д. -->
+                                <div class="row" id="tooltip-actions-app">
+                                    <div class="container-fluid d-flex justify-content-center align-items-center mt-2">
+                                        <button class="btn btn-sm btn-outline-success mb-1 mx-1" @click="show_chat_creation_card = true;">Создать общий чат</button>
+                                        <button class="btn btn-sm btn-outline-success disabled mb-1 mx-1">Создать канал</button>
+                                        <button class="btn btn-sm btn-outline-danger disabled mb-1">Покинуть все чаты</button>
+                                    </div>
+
+                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+
+                                    <!-- create chat room -->
+                                    <transition name="slide-down">
+                                        <div v-if="show_chat_creation_card" class="container-fluid">
+                                            <div class="mt-0">
+                                                <div class="mt-3 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px;">
+                                                    <div class="text-center mb-0">
+                                                        <p class="mt-0 mb-0 fw-bold">Создание общего чата</p>
+                                                        <p class="small">Помните, <span class="text-danger">нецензурная лексика</span> запрещена в названии чата</p>
+                                                    </div>
+    
+                                                    <!-- inputs -->
+                                                    <div>
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text">Название чата</span>
+                                                            <input class="form-control" v-model="chat_room_name"
+                                                                :class="{ 'is-valid': is_valid_room_name_input, 'is-invalid': !is_valid_room_name_input }" 
+                                                                @input="validate_room_name" 
+                                                                placeholder="Введите название чата">
+    
+                                                            <div v-if="!is_valid_room_name_input" class="invalid-feedback">Название чата не может быть меньше 4 символов</div>
+                                                        </div>
+                                                        <div class="input-group input-group-sm">
+                                                            <input 
+                                                            type="file" 
+                                                            class="form-control" 
+                                                            :class="{ 'is-valid': is_valid_room_avatar_input, 'is-invalid': !is_valid_room_avatar_input }"
+                                                            @input="handle_input_avatar">
+    
+                                                            <span class="input-group-text">Аватарка</span>
+                                                            <div class="invalid-feedback">Выберите аватарку с верным форматом, форматы указаны ниже</div>
+                                                        </div>
+                                                        <span class="small mb-3 text-success">разрешенные форматы: <span class="text-dark">.jpg .webp .png .svg</span></span>
+                                                    </div>
+    
+                                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+    
+                                                    <div class="text-center mb-0 mt-0">
+                                                        <p class="mt-0 mb-0 fw-bold">Пользователи</p>
+                                                        <p class="small">Некоторые пользователи могут <span class="text-danger">запретить</span> приглашать себя в общие чаты</p>
+                                                    </div>
+    
+                                                    <div class="input-group input-group-sm mb-3 mt-3">
+                                                        <span class="input-group-text"><img src="{% static 'image/svg/icon-search.svg' %}" width="17px"></span>
+                                                        <input @input="search_user" v-model="query" type="text" class="form-control" placeholder="Введите (логин, или имя, или фамилию) пользователя...">
+                                                    </div>
+                                                    
+                                                    <template v-for="searched_user in searched_users">
+                                                        <search-user-card 
+                                                            :searched_user="searched_user"
+                                                            :invited_users_ids="invited_users_ids"
+                                                            @invite-user="invite_user_to_chat" 
+                                                            @show-details="show_user_details">
+                                                        </search-user-card>
+                                                    </template>
+    
+                                                    <flash-card v-show="show_flash_card" :message="flash_card_message"></flash-card>
+    
+                                                    <div class="divider-horizontal" style="margin: 0.8rem 1;"></div>
+    
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <button class="btn btn-sm btn-outline-success mx-2" @click="create_chat_room" :disabled="!is_valid_room_name_input || !is_valid_room_avatar_input">Создать чат</button>
+                                                        <button class="btn btn-sm btn-outline-danger" @click="close_chat_creation_card">Отменить</button>
+                                                    </div>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </transition>
+
+                                    <!-- create channel -->
+                                    <div class="container-fluid d-none">
+                                        <div class="mt-1 mb-2 p-2" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px;">
+                                            create channek
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- СЕКЦИЯ ЧАТОВ -->
+                                <div class="row" id="chat-rooms-app">
+                                    <!-- приглашения в чаты -->
+                                    <div class="container-fluid">
+                                        <div @click="show_invititaions = !show_invititaions" class="d-flex justify-content-start align-items-center" style="cursor: pointer;">
+                                            <p class="small text-muted mb-1 me-2">Приглашения в чаты</p>
+                                            <img :src="show_invititaions ? '/static/image/svg/icon-collapse-top.svg' : '/static/image/svg/icon-collapse-under.svg'" class="me-3" width="19px">
+                                        </div>
+
+                                        <!-- приглашения -->
+                                        <transition name="slide-down">
+                                            <div v-show="show_invititaions" class="overflow-auto custom-scrollbar" style="max-height: 400px;">
+                                                <invitation-chat-room
+                                                    v-for="invitation_chat_room in invitation_chat_rooms"
+                                                    :key="invitation_chat_room.id"
+                                                    :invitation_chat_room="invitation_chat_room"
+                                                    @chat-action="send_invitation_chat_action">
+                                                </invitation-chat-room>
+                                                <div v-if="show_empty_invititaion" class="d-flex justify-content-center align-items-center mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(250, 179, 195); border-radius: 6px; cursor: default;">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <img src="{% static 'image/svg/icon-sad-smile.svg' %}" class="me-3" width="50px">
+                                                        <p class="m-0">К сожалению, у Вас пока что нет приглашений в общие чаты</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </transition>
+                                    </div>
+
+                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+
+                                    <!-- чаты пользователя -->
+                                    <div class="container-fluid">
+                                        <div @click="show_user_chats = !show_user_chats" class="d-flex justify-content-start align-items-center" style="cursor: pointer;">
+                                            <p class="small text-muted mb-1 me-2">Мои чаты</p>
+                                            <img :src="show_user_chats ? '/static/image/svg/icon-collapse-top.svg' : '/static/image/svg/icon-collapse-under.svg'" class="me-3" width="19px">
+                                        </div>
+
+                                        <!-- чаты -->
+                                        <transition name="slide-down">
+                                            <div v-if="show_user_chats" class="overflow-auto custom-scrollbar" style="max-height: 400px;">
+                                                <user-chat-room 
+                                                    v-for="user_room in user_chat_rooms" 
+                                                    :key="user_room.id" 
+                                                    :user_room="user_room"
+                                                    >
+                                                </user-chat-room>
+                                            
+                                                <div v-if="show_empty_user_chat_rooms" class="d-flex justify-content-center align-items-center mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(250, 179, 195); border-radius: 6px; cursor: default;">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <img src="{% static 'image/svg/icon-sad-smile.svg' %}" class="me-3" width="50px">
+                                                        <p class="m-0">К сожалению, у Вас пока что нет общих чатов</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </transition>
+                                    </div>
+
+                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+
+                                    <!-- общие чаты, к которым пользователь может присоединиться -->
+                                    <div class="container-fluid">
+                                        <div @click="show_shared_chats = !show_shared_chats" class="d-flex justify-content-start align-items-center" style="cursor: pointer;">
+                                            <p class="small text-muted mb-1 me-2">Открытые общие чаты</p>
+                                            <img :src="show_shared_chats ? '/static/image/svg/icon-collapse-top.svg' : '/static/image/svg/icon-collapse-under.svg'" class="me-3" width="19px">
+                                        </div>
+
+                                        <!-- открытые чаты -->
+                                        <transition name="slide-down">
+                                            <div v-if="show_shared_chats" class="overflow-auto custom-scrollbar" style="max-height: 300px;">
+                                                <shared-chat-room 
+                                                    v-for="shared_chat_room in shared_chat_rooms" 
+                                                    :key="shared_chat_room.id" 
+                                                    :shared_chat_room="shared_chat_room"
+                                                    >
+                                                </shared-chat-room>
+
+                                                <div v-if="show_empty_shared_chat_rooms" class="d-flex justify-content-center align-items-center mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(250, 179, 195); border-radius: 6px; cursor: default;">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <img src="{% static 'image/svg/icon-sad-smile.svg' %}" class="me-3" width="50px">
+                                                        <p class="m-0">К сожалению, доступных Вам общих чатов нет</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </transition>
+                                    </div>
+
+                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+                                </div>
+
+                                <!-- СЕКЦИЯ КАНАЛОВ - ВЫНЕСТИ-->
+                                <div class="row d-none">
+                                    <!-- мои каналы предприятия -->
+                                    <div class="container-fluid">
+                                        <div @click="show_user_channels" class="d-flex justify-content-start align-items-center" style="cursor: pointer;">
+                                            <p class="small text-muted mb-1 me-2">Мои каналы</p>
+                                            <img :src="show_user_channels ? '/static/image/svg/icon-collapse-top.svg' : '/static/image/svg/icon-collapse-under.svg'" class="me-3" width="19px">
+                                        </div>
+
+                                        <!-- мои каналы -->
+                                        <div class="overflow-auto custom-scrollbar" style="max-height: 300px;">
+                                            <div class="mb-2">
+                                                <div class="d-flex justify-content-start mt-2 mb-3 animate__animated animate__fadeInDown" style="cursor: default;">
+                                                    <div class="position-relative" style="flex-shrink: 0;">
+                                                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                    </div>
+                                            
+                                                    <div class="mx-1">
+                                                        <p class="mt-0 mb-0">Общий канал предприятия</p>
+                                                        <p class="mt-0 mb-0 small text-muted">Создатель: Миргородский Александр</p>
+                                                    </div>
+                                            
+                                                    <div class="d-flex align-items-center ms-auto mb-3 mt-2">
+                                                        <button class="border-0 btn-transition btn btn-outline-success" @click="$emit('chat-action', invitation_chat_room.room_id, 'accept')">
+                                                            <svg width="15px" height="15px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill="currentColor" d="M13 4.1974q0 .3097-.21677.5265L7.17806 10.329l-1.0529 1.0529q-.21677.2168-.52645.2168-.30968 0-.52645-.2168L4.01935 10.329 1.21677 7.5264Q1 7.3097 1 7t.21677-.5265l1.05291-1.0529q.21677-.2167.52645-.2167.30968 0 .52645.2167l2.27613 2.2839 5.07871-5.0864q.21677-.2168.52645-.2168.30968 0 .52645.2168l1.05291 1.0529Q13 3.8877 13 4.1974z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+
+                                    <!-- доступные каналы предприятия -->
+                                    <div class="container-fluid">
+                                        <div class="d-flex justify-content-start align-items-center" style="cursor: pointer;">
+                                            <p class="small text-muted mb-1 me-2">Мои каналы</p>
+                                            <img src="{% static 'image/svg/icon-unwrap.svg' %}" class="me-3" width="19px">
+                                        </div>
+
+                                        <!-- доступные каналы -->
+                                        <div class="overflow-auto custom-scrollbar" style="max-height: 300px;">
+                                            <div class="mb-2">
+                                                <div class="d-flex justify-content-start mt-2 mb-3 animate__animated animate__fadeInDown" style="cursor: default;">
+                                                    <div class="position-relative" style="flex-shrink: 0;">
+                                                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                    </div>
+                                            
+                                                    <div class="mx-1">
+                                                        <p class="mt-0 mb-0">канал всех каналов</p>
+                                                        <p class="mt-0 mb-0 small text-muted">Создатель: Иванов Олег</p>
+                                                    </div>
+                                            
+                                                    <div class="d-flex align-items-center ms-auto mb-3 mt-2">
+                                                        <button class="border-0 btn-transition btn btn-outline-success" @click="$emit('chat-action', invitation_chat_room.room_id, 'accept')">
+                                                            <svg width="15px" height="15px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill="currentColor" d="M13 4.1974q0 .3097-.21677.5265L7.17806 10.329l-1.0529 1.0529q-.21677.2168-.52645.2168-.30968 0-.52645-.2168L4.01935 10.329 1.21677 7.5264Q1 7.3097 1 7t.21677-.5265l1.05291-1.0529q.21677-.2167.52645-.2167.30968 0 .52645.2167l2.27613 2.2839 5.07871-5.0864q.21677-.2168.52645-.2168.30968 0 .52645.2168l1.05291 1.0529Q13 3.8877 13 4.1974z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
+                                </div>
+
+                                <!-- СЕКЦИЯ СОТРУДНИКОВ -->
+                                <div class="row" id="employees-app">
+                                    <!-- сотрудники предприятия -->
+                                    <div class="container-fluid mb-2">
+                                        <div @click="show_employees = !show_employees" class="d-flex justify-content-start align-items-center" style="cursor: pointer;">
+                                            <p class="small text-muted mb-1 me-2">Сотрудники</p>
+                                            <img :src="show_employees ? '/static/image/svg/icon-collapse-top.svg' : '/static/image/svg/icon-collapse-under.svg'" class="me-3" width="19px">
+                                        </div>
+
+                                        <transition name="slide-down">
+                                            <div v-if="show_employees">
+                                                <!-- поиск сотрудников -->
+                                                <div class="input-group input-group-sm mt-1">
+                                                    <span class="input-group-text"><img src="{% static 'image/svg/icon-search.svg' %}" width="17px"></span>
+                                                    <input type="text" class="form-control" placeholder="Введите (логин, или имя, или фамилию) пользователя...">
+                                                </div>
+
+                                                <!-- список сотрудников -->
+                                                <div v-if="show_employees" class="overflow-auto custom-scrollbar" style="max-height: 350px;">
+                                                    <employee
+                                                        v-for="employee in employees"
+                                                        :key="employee.id"
+                                                        :employee="employee">
+                                                    </employee>
+                                                </div>
+
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <button class="btn btn-sm btn-outline-secondary">Все</button>
+                                                    <button class="btn btn-sm btn-outline-secondary mx-1 me-1">Онлайн</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">Оффлайн</button>
+                                                </div>
+                                            </div>
+                                        </transition>
+                                    </div>
+                                </div>
+
+                                <!-- информация о данной подсистеме -->
+                                <div class="row mt-auto">
+                                    <div class="container-fluid">
+                                        <div class="row d-flex justify-content-center align-items-center text-center">
+                                            <div class="col-12">
+                                                <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" width="35px">
+                                            </div>
+                                            <div class="col-12">
+                                                <p class="text-muted small mt-0 mb-0">
+                                                    <span><i class="fas fa-comments"></i> Chat System v1.0.0</span>
+                                                </p>
+                                                <p class="text-muted small">
+                                                    <span><i class="fas fa-code-branch"></i> Dev Feedback - <a href="mailto:vlad2k15@bk.ru">vlad2k15@bk.ru</a></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT BAR -->
+                            <div class="col-9 col-md-6 col-lg-7 col-xl-8 col-xxl-9">
+                                <div class="container-fluid">
+                                    
+                                    <!-- header chat -->
+                                    <div class="row" style="margin-left: -30px;">
+                                        <div class="container-fluid">
+                                            <div class="mt-2 d-flex justify-content-start">
+                                                <div class="position-relative" style="flex-shrink: 0;">
+                                                    <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                </div>
+                                    
+                                                <div class="mx-2">
+                                                    <p class="mt-0 mb-0">Общий чат</p>
+                                                    <p class="small text-muted">Участники: Иванов Олег, Петров Валентин</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- messages chat -->
+                                    <div class="row" style="margin-left: -30px;">
+                                        <div class="container-fluid">
+                                            f
+                                        </div>
+                                    </div>
+
+                                    <!-- footer chat -->
+                                    <div class="row" style="margin-left: -30px;">
+                                        <div class="container-fluid">
+                                            footer
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- footer -->
+            <div class="container-fluid">
+                <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                    <p class="col-md-4 mb-0 text-body-secondary mt-4">© 2023 HWorking, Inc</p>
+                    <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mt-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" width="50px">
+                    </a>
+                    <ul class="nav col-md-4 mt-3 justify-content-end">
+                    </ul>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/chat_app_components.js' %}"></script>
+<script src="{% static 'js/chat_app_vue.js' %}"></script>
+{% endblock scripts %}

@@ -157,9 +157,9 @@ const chat_rooms_app = new Vue({
             show_empty_shared_chat_rooms: false,
             show_empty_invititaion: false, 
 
-            toggle_invitation_chats: false, 
-            toggle_user_chats: true, 
-            toggle_shared_chats: false
+            show_invititaions: false, 
+            show_user_chats: true, 
+            show_shared_chats: false,
         }
     }, 
     mounted(){
@@ -271,6 +271,8 @@ const employees_app = new Vue({
     data(){
         return{
             employees: [],
+
+            show_employees: true, 
         }
     }, 
     mounted(){

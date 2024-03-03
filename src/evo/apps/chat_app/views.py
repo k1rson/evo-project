@@ -5,7 +5,7 @@ from ..authentication_app.mixins import RedirectNoneAuthenticatedUserMixin
 
 class ChatPageView(RedirectNoneAuthenticatedUserMixin, 
                    View):
-    template_name = 'chat_app/chat_app.html'
+    template_name = 'chat_app/chat_app1.html'
 
     def get(self, request): 
         return render(request, self.template_name)

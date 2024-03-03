@@ -100,69 +100,7 @@
 
                                         <!-- create chat -->
                                         <div v-if="show_chat_creation_card" class="row mb-2">
-                                            <div class="mt-0">
-                                                <div class="mt-3 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px;">
-                                                    <div class="text-center mb-0">
-                                                        <p class="mt-0 mb-0 fw-bold">Создание общего чата</p>
-                                                        <p class="small">Помните, <span class="text-danger">нецензурная лексика</span> запрещена в названии чата</p>
-                                                    </div>
-    
-                                                    <!-- inputs -->
-                                                    <div>
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text">Название чата</span>
-                                                            <input class="form-control" v-model="chat_room_name"
-                                                                :class="{ 'is-valid': is_valid_room_name_input, 'is-invalid': !is_valid_room_name_input }" 
-                                                                @input="validate_room_name" 
-                                                                placeholder="Введите название чата">
-    
-                                                            <div v-if="!is_valid_room_name_input" class="invalid-feedback">Название чата не может быть меньше 4 символов</div>
-                                                        </div>
-                                                        <div class="input-group input-group-sm">
-                                                            <input 
-                                                            type="file" 
-                                                            class="form-control" 
-                                                            :class="{ 'is-valid': is_valid_room_avatar_input, 'is-invalid': !is_valid_room_avatar_input }"
-                                                            @input="handle_input_avatar">
-    
-                                                            <span class="input-group-text">Аватарка</span>
-                                                            <div class="invalid-feedback">Выберите аватарку с верным форматом, форматы указаны ниже</div>
-                                                        </div>
-                                                        <span class="small mb-3 text-success">разрешенные форматы: <span class="text-dark">.jpg .webp .png .svg</span></span>
-                                                    </div>
-    
-                                                    <div class="divider-horizontal" style="margin: 0.5rem 0;"></div>
-    
-                                                    <div class="text-center mb-0 mt-0">
-                                                        <p class="mt-0 mb-0 fw-bold">Пользователи</p>
-                                                        <p class="small">Некоторые пользователи могут <span class="text-danger">запретить</span> приглашать себя в общие чаты</p>
-                                                    </div>
-    
-                                                    <div class="input-group input-group-sm mb-3 mt-3">
-                                                        <span class="input-group-text"><img src="{% static 'image/svg/icon-search.svg' %}" width="17px"></span>
-                                                        <input @input="search_user" v-model="query" type="text" class="form-control" placeholder="Введите (логин, или имя, или фамилию) пользователя...">
-                                                    </div>
-                                                    
-                                                    <template v-for="searched_user in searched_users">
-                                                        <search-user-card 
-                                                            :searched_user="searched_user"
-                                                            :invited_users_ids="invited_users_ids"
-                                                            @invite-user="invite_user_to_chat" 
-                                                            @show-details="show_user_details">
-                                                        </search-user-card>
-                                                    </template>
-    
-                                                    <flash-card v-show="show_flash_card" :message="flash_card_message"></flash-card>
-    
-                                                    <div class="divider-horizontal" style="margin: 0.8rem 1;"></div>
-    
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <button class="btn btn-sm btn-outline-success mx-2" @click="create_chat_room" :disabled="!is_valid_room_name_input || !is_valid_room_avatar_input">Создать чат</button>
-                                                        <button class="btn btn-sm btn-outline-danger" @click="close_chat_creation_card">Отменить</button>
-                                                    </div>
-    
-                                                </div>
-                                            </div>
+                                            
                                         </div>
 
                                         <!-- leave all chats -->
@@ -368,6 +306,6 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'js/vue/components/chat_app_components.js' %}"></script>
+<script src="{% static 'js/chat_app_components.js' %}"></script>
 <script src="{% static 'js/chat_app_vue.js' %}"></script>
 {% endblock scripts %}

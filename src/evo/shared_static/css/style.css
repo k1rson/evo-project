@@ -84,3 +84,28 @@ img {
 .list-group-flush.overflow-auto::-webkit-scrollbar-thumb:vertical {
     height: 20px;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 0px; 
+}
+
+/* Сделать полосу прокрутки меньше заметной */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px; 
+}
+
+/* Цвет полосы прокрутки */
+.custom-scrollbar::-webkit-scrollbar {
+    background-color: transparent; 
+}
+
+/* Цвет трека (фона полосы прокрутки) */
+.custom-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent; 
+}
+
+/* Цвет полосы прокрутки */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #ccc; 
+    border-radius: 10px; 
+}
