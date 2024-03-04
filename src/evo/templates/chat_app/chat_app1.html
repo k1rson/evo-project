@@ -12,6 +12,8 @@
 {% block content %}
 {% csrf_token %}
 
+<div id="user-id" class="d-none">{{ user.pk }}</div>
+
 <div class="container-fluid">
     <div class="row">
 
@@ -240,7 +242,7 @@
                                                     v-for="user_room in user_chat_rooms" 
                                                     :key="user_room.id" 
                                                     :user_room="user_room"
-                                                    >
+                                                    @chat-selected="show_messanger">
                                                 </user-chat-room>
                                             
                                                 <div v-if="show_empty_user_chat_rooms" class="d-flex justify-content-center align-items-center mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(250, 179, 195); border-radius: 6px; cursor: default;">
@@ -413,20 +415,35 @@
                             </div>
 
                             <!-- RIGHT BAR -->
-                            <div class="col-9 col-md-6 col-lg-7 col-xl-8 col-xxl-9">
-                                <div class="container-fluid">
-                                    
+                            <div id="messanger-app" class="col-9 col-md-6 col-lg-7 col-xl-8 col-xxl-9 d-flex flex-column" style="min-height: 750px;">
+
+                                <div v-if="!selected_chat" class="container">
+                                    <div class="row d-flex justify-content-center align-items-center" style="margin-top: 310px;">
+                                        <div class="col-4 col-md-12 col-lg-12 col-xl-8 col-xxl-4">
+                                            <div class="mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px; cursor: default;">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <img src="{% static 'image/svg/icon-smile.svg' %}" class="me-3" width="50px">
+                                                    <p class="m-0">Выберите <span class="fw-bold">чат</span>, чтобы начать общение</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- header-body chat -->
+                                <div v-if="selected_chat" class="container-fluid">
+                                
                                     <!-- header chat -->
-                                    <div class="row" style="margin-left: -30px;">
+                                    <div class="row animate__animated animate__fadeIn" style="margin-left: -30px;">
                                         <div class="container-fluid">
                                             <div class="mt-2 d-flex justify-content-start">
                                                 <div class="position-relative" style="flex-shrink: 0;">
-                                                    <img src="{% static 'image/svg/logo-evo-none-text.svg' %}" class="rounded-avatar" />
+                                                    <img :src="selected_chat.room_avatar" class="rounded-avatar" />
                                                 </div>
                                     
                                                 <div class="mx-2">
-                                                    <p class="mt-0 mb-0">Общий чат</p>
-                                                    <p class="small text-muted">Участники: Иванов Олег, Петров Валентин</p>
+                                                    <p class="mt-0 mb-0">[[ selected_chat.room_name ]]</p>
+                                                    <p class="small text-muted">Участники: [[ selected_chat.participants.join(', ') ]]</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -434,18 +451,47 @@
 
                                     <!-- messages chat -->
                                     <div class="row" style="margin-left: -30px;">
-                                        <div class="container-fluid">
-                                            f
+                                        <!-- loader for msgs -->
+                                        <div v-if="show_loader" class="container">
+                                            <div class="row d-flex justify-content-center align-items-center" style="margin-top: 275px;">
+                                                <div class="col-4 col-md-12 col-lg-12 col-xl-8 col-xxl-4">
+                                                    <div class="mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px; cursor: default;">
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <div class="spinner-border mx-2"></div>
+                                                            <p class="m-0">Ожидайте, идет подгрузка сообщений</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- messages -->
+                                        <div v-if="!show_loader" class="container-fluid">
+                                            <div class="overflow-auto custom-scrollbar" style="max-height: 750px;">
+                                                <chat-messages
+                                                    v-for="message in messages"
+                                                    :message="message"
+                                                    :key="message.id"
+                                                    >
+
+                                                </chat-messages>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- footer chat -->
-                                    <div class="row" style="margin-left: -30px;">
-                                        <div class="container-fluid">
-                                            footer
+                                <!-- footer chat -->
+                                <div v-if="selected_chat" class="mt-auto" style="margin-left: -15px;">
+                                    <div class="container-fluid mb-3">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="input-group">
+                                                <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
+                                                <input type="text" class="form-control" placeholder="Напишите что-нибудь, затем нажмите Enter"
+                                                    v-model="msg">
+                                                <button class="btn btn-sm btn-outline-success mx-2" @click="send_message">Отправить</button>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

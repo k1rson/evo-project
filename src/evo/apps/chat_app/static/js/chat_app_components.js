@@ -143,35 +143,44 @@ Vue.component('header-chat-room', {
     `
 })
 
-Vue.component('messanger-chat-room', {
+Vue.component('chat-messages', {
     props: ['message'],
     delimiters: ['[[', ']]'],
     template: `
-    <li class="list-group-item border-0 mb-2">
-    <div class="p-0">
+    <div v-if="!message.is_owner_msg" class="mb-4 animate__animated animate__fadeIn" style="cursor: default;">
         <div class="d-flex justify-content-start align-items-start">
-            <!-- Если message.is_owner, то показываем аватар справа, иначе слева -->
-            <div v-if="!message.is_owner" class="position-relative me-2" style="flex-shrink: 0">
-                <img :src="message.sender_src_avatar" class="rounded-avatar"/>
+            <div class="position-relative me-2" style="flex-shrink: 0">
+                <img :src="message.avatar_src" class="rounded-avatar-messanger" />
                 <span class="online-marker"></span>
             </div>
             <div class="message-container flex-grow-1">
-                <!-- Если message.is_owner, то применяем класс chat-box-right, иначе chat-box-left -->
-                <p :class="['m-0', 'small', {'chat-box-left': !message.is_owner, 'chat-box-right': message.is_owner}]">
+                <p class="m-0 chat-box-left small">
                     [[ message.text_message ]]
                 </p>
             </div>
-            <!-- Если message.is_owner, то показываем аватар слева, иначе справа -->
-            <div v-if="message.is_owner" class="position-relative me-2" style="flex-shrink: 0">
-                <img :src="message.sender_src_avatar" class="rounded-avatar"/> <!-- Пример уменьшения отступа -->
+        </div>
+        
+        <div class="mx-5 d-flex justify-content-start align-items-center">
+            <img src="/static/image/svg/icon-calendar.svg" width="15px">
+            <p class="m-0 mx-1 small text-start" style="opacity: .6;">[[ message.timestamp ]] | <strong>[[ message.full_name ]]</strong></p>
+        </div>
+    </div>
+
+    <div v-else class="mb-4 animate__animated animate__fadeIn" style="cursor: default;">
+        <div class="d-flex justify-content-center align-items-start me-2">
+            <p class="m-0 chat-box-right small">
+                [[ message.text_message ]]
+            </p>
+            <div class="position-relative me-2" style="flex-shrink: 0">
+                <img :src="message.avatar_src" class="rounded-avatar-messanger" width="38px"/>
                 <span class="online-marker"></span>
             </div>
         </div>
-        <div class="mx-5 d-flex justify-content-start align-items-center">
+        
+        <div class="mx-5 d-flex justify-content-end align-items-center">
             <img src="/static/image/svg/icon-calendar.svg" width="15px">
-            <p class="m-0 mx-1 small text-start" style="opacity: .6;">[[ message.timestamp ]]| Сегодня | [[ message.sender_id ]]</p>
+            <p class="m-0 mx-1 small text-start" style="opacity: .6;">[[ message.timestamp ]] | <strong>Вы</strong></p>
         </div>
     </div>
-</li>
     `
 })

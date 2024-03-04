@@ -1,3 +1,6 @@
+// constans
+const USER_ID = document.getElementById('user-id').innerHTML;
+
 // apps 
 const tooltip_actions_app = new Vue({
     el: '#tooltip-actions-app',
@@ -261,6 +264,10 @@ const chat_rooms_app = new Vue({
                 .catch(error => {
                     call_toast(`Ошибка сервера: ${error.detail} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
              })
+        }, 
+
+        show_messanger(selected_chat){
+            messanger_app.show_chat(selected_chat);
         }
     }
 })
@@ -277,6 +284,29 @@ const employees_app = new Vue({
     }, 
     mounted(){
         this.fetch_employees();
+
+        // ws
+        const ws = new WebSocket(`ws://${window.location.host}/ws/update-status/`);
+        ws.onmessage = (event) => {
+            const event_data = JSON.parse(event.data);
+            if (event_data.type === 'set_online_status_user') {
+
+                const index = employees_app.employees.findIndex(user => user.id === event_data.active_user_id);
+                if (index !== -1) {
+                    employees_app.employees[index].is_online = true;
+                }
+
+            } else if (event_data.type === 'set_offline_status_user') {
+
+                event_data.inactive_users_ids.forEach(inactive_user_id => {
+                    const index = employees_app.employees.findIndex(user => user.id === inactive_user_id);
+                    if (index !== -1) {
+                        employees_app.employees[index].is_online = false;
+                    }
+                });
+
+            }
+        };
     },
     methods: {
         fetch_employees(){
@@ -303,31 +333,55 @@ const employees_app = new Vue({
                     call_toast(`Ошибка сервера: ${error} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
                 })
         }, 
-        update_user_status(){
-
-        }
     }
 })
 
-// ws
-const ws = new WebSocket(`ws://${window.location.host}/ws/update-status/`);
-ws.onmessage = (event) => {
-    const event_data = JSON.parse(event.data);
-    if (event_data.type === 'set_online_status_user') {
+const messanger_app = new Vue({
+    el: '#messanger-app', 
+    delimiters: ['[[', ']]'],
 
-        const index = employees_app.employees.findIndex(user => user.id === event_data.active_user_id);
-        if (index !== -1) {
-            employees_app.employees[index].is_online = true;
+    data(){
+        return{
+            ws: undefined,
+            selected_chat: undefined,
+            messages: [],
+
+            msg: '',
+            
+            show_loader: false
         }
+    }, 
+    methods: {
+        show_chat(selected_chat){
+            this.selected_chat = selected_chat;
+            this.load_messages();
 
-    } else if (event_data.type === 'set_offline_status_user') {
+            this.ws = new WebSocket(`ws://${window.location.host}/ws/chat_room/${selected_chat.id}`);
+            this.ws.onmessage = (event) => {
+                const event_data = JSON.parse(event.data);
 
-        event_data.inactive_users_ids.forEach(inactive_user_id => {
-            const index = employees_app.employees.findIndex(user => user.id === inactive_user_id);
-            if (index !== -1) {
-                employees_app.employees[index].is_online = false;
-            }
-        });
+                if(event_data.user_id === USER_ID){
+                    console.log(event_data)
 
+                    event_data['is_owner_msg'] = true;
+                    this.messages.push(event_data)
+                    return;
+                }
+
+                this.messages.push(event_data)
+            };
+        }, 
+        load_messages(){
+            this.show_loader = true;
+            this.show_loader = false;
+        },
+        send_message(){
+            this.ws.send(JSON.stringify({
+                'user_id': USER_ID,
+                'text_message': this.msg, 
+            }));
+
+            this.msg = '';
+        }
     }
-};
+})
