@@ -44,16 +44,15 @@ body {
 
 .chat-box-left {
     position: relative;
-    display: flex;
     text-align: left;
-    background: #e0f3ff;
+    background: #e0e0e0;
     opacity: 1;
     border: 0;
     padding: 0.75rem 1.5rem;
     border-radius: 30px;
     border-top-left-radius: 0.25rem;
-    max-width: 50%;
-    min-width: 95%;
+    display: inline-block;
+    max-width: 80%; /* Можно также указать максимальную ширину */
 }
 
 .chat-box-right {
@@ -64,9 +63,8 @@ body {
     padding: 0.75rem 1.5rem;
     border-radius: 30px;
     border-top-right-radius: 0.25rem;
-    display: flex;
-    max-width: 80%;
-    min-width: 95%;
+    max-width: 60%;
+    display: inline-block;
     text-align: left;
 }
 

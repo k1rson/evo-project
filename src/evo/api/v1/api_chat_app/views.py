@@ -5,10 +5,10 @@ from rest_framework import permissions, authentication, status
 from django.db.models import Q
 
 from apps.authentication_app.models import CustomUser
-from apps.chat_app.models import ChatRoomModel, UserChatRoomModel, ChatRoomInvitationModel
+from apps.chat_app.models import ChatRoomModel, UserChatRoomModel, ChatRoomInvitationModel, MessageModel
 
 from constants import error_messages 
-from .serializer import ChatRoomSerializer, ChatRoomActionsSerializer, SearchTargetUserSerializer, InvitationChatRoomSerializer, EmployeeSerializer
+from .serializer import ChatRoomSerializer, ChatRoomActionsSerializer, SearchTargetUserSerializer, InvitationChatRoomSerializer, EmployeeSerializer, MessageSerializer
 
 class SharedChatRoomsAPI(APIView):
     """Получение всех общих чатов (только тех, в которых не находится пользователь)"""
@@ -194,3 +194,32 @@ class EmployeeAPI(APIView):
             'success': True, 
             'employees': serializer.data
         }, status=status.HTTP_200_OK)
+    
+class MessageAPI(APIView):
+    """Получение сообщений"""
+
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request):
+        room_id = int(request.query_params.get('room_id'))
+        if not room_id:
+            return Response(data={
+                'success': False,
+                'err_msg': 'не указан room_id'
+            }, status=status.HTTP_200_OK)
+
+        message_queryset = MessageModel.objects.filter(room_id=room_id)
+        serializer = MessageSerializer(message_queryset, many=True, context={'user_id': request.user.id})
+        if not serializer.data:
+            return Response(data={
+                'success': False, 
+                'err_msg': None
+            }, status=status.HTTP_200_OK)
+        
+        return Response(data={
+            'success': True, 
+            'messages': serializer.data
+        }, status=status.HTTP_200_OK)
+        
+        

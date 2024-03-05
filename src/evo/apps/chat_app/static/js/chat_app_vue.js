@@ -1,3 +1,15 @@
+window.onload = function() {
+    // Скрываем loader после полной загрузки страницы
+    const loader = document.getElementById('loader');
+    loader.classList.add('d-none');
+
+    const main = document.getElementById('main');
+    main.classList.remove('d-none');
+
+    const footer = document.getElementById('footer');
+    footer.classList.remove('d-none');
+};
+
 // constans
 const USER_ID = document.getElementById('user-id').innerHTML;
 
@@ -339,49 +351,111 @@ const employees_app = new Vue({
 const messanger_app = new Vue({
     el: '#messanger-app', 
     delimiters: ['[[', ']]'],
-
     data(){
         return{
             ws: undefined,
             selected_chat: undefined,
-            messages: [],
 
-            msg: '',
+            chat_messages: {},
+            user_message: '',
             
-            show_loader: false
+            show_loader: false, 
+
+            should_scrool_bottom: false,
+            scrool_target: undefined, 
         }
     }, 
     methods: {
         show_chat(selected_chat){
-            this.selected_chat = selected_chat;
-            this.load_messages();
+            // закрывает ранее открытый сокет воизбежании проблем с дублированием сообщений
+            if (this.ws !== undefined) {
+                this.ws.close();
+            }
 
+            this.selected_chat = selected_chat;
+
+            if (!this.chat_messages.hasOwnProperty(selected_chat.id)) {
+                this.load_messages(selected_chat.id);
+            }
+            
             this.ws = new WebSocket(`ws://${window.location.host}/ws/chat_room/${selected_chat.id}`);
             this.ws.onmessage = (event) => {
                 const event_data = JSON.parse(event.data);
+                const chat_id = event_data.chat_id;
 
-                if(event_data.user_id === USER_ID){
-                    console.log(event_data)
-
-                    event_data['is_owner_msg'] = true;
-                    this.messages.push(event_data)
-                    return;
+                if(!this.chat_messages.hasOwnProperty(chat_id)){
+                    this.$set(this.chat_messages, chat_id, []);
                 }
 
-                this.messages.push(event_data)
+                if(event_data.user_id === USER_ID){
+                    event_data['is_owner_msg'] = true;
+                    this.chat_messages[chat_id].push(event_data);
+                    this.scroll_to_bottom();
+                } else {
+                    this.chat_messages[chat_id].push(event_data);
+                }
             };
+
+            setTimeout(() => {
+                this.scroll_to_bottom(); 
+            }, 100); 
         }, 
-        load_messages(){
-            this.show_loader = true;
-            this.show_loader = false;
+        load_messages(chat_id){
+            const url = `/api/v1/chat-room-api/messages?room_id=${chat_id}`;
+            
+            this.show_loader = true;            
+            fetch(url, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json', 
+                    'Authorization': `Token ${Cookies.get('token')}`,
+                    'Cookie': `csrf_token=${Cookies.get('csrf_token')}`
+                }
+                })
+                .then(check_response)
+                .then(response => {
+                    if(!response.success){
+                        this.show_loader = false;
+                        return;
+                    }
+
+                    if (!this.chat_messages[chat_id]) {
+                        this.$set(this.chat_messages, chat_id, []);
+                    }
+                    
+                    response.messages.forEach(message => {
+                        this.chat_messages[chat_id].push({
+                            'full_name': message.sender_full_name,
+                            'avatar_src': message.sender_src_avatar, 
+                            'timestamp': message.timestamp,
+                            'text_message': message.text_message, 
+                            'is_owner_msg': message.is_owner_msg
+                        });
+                    });
+
+                    this.show_loader = false;
+                })
+                .catch(error => {
+                    call_toast(`Ошибка сервера: ${error} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
+                })
         },
         send_message(){
             this.ws.send(JSON.stringify({
                 'user_id': USER_ID,
-                'text_message': this.msg, 
+                'text_message': this.user_message, 
+                'chat_id': this.selected_chat.id
             }));
 
-            this.msg = '';
-        }
+            this.user_message = '';
+        },
+
+        // other func
+        scroll_to_bottom() {
+            const container = this.$refs.chat_scroll_area;
+            if(container){
+                gsap.to(container, { duration: 1.0, scrollTop: container.scrollHeight });
+            }
+        },
     }
 })

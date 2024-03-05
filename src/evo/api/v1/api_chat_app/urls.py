@@ -12,4 +12,5 @@ urlpatterns = [
     path('search-target-user/', views.SearchTargetUserAPI.as_view(), name='search_target_user'),
 
     path('employees', views.EmployeeAPI.as_view(), name='employees'),
+    path('messages', views.MessageAPI.as_view(), name='messages')
 ]

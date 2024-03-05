@@ -154,25 +154,24 @@ Vue.component('chat-messages', {
                 <span class="online-marker"></span>
             </div>
             <div class="message-container flex-grow-1">
-                <p class="m-0 chat-box-left small">
+                <p class="chat-box-left small">
                     [[ message.text_message ]]
                 </p>
             </div>
         </div>
-        
-        <div class="mx-5 d-flex justify-content-start align-items-center">
+        <div class="mx-5 d-flex justify-content-start align-items-center" style="margin-top: -10px;">
             <img src="/static/image/svg/icon-calendar.svg" width="15px">
             <p class="m-0 mx-1 small text-start" style="opacity: .6;">[[ message.timestamp ]] | <strong>[[ message.full_name ]]</strong></p>
         </div>
     </div>
 
     <div v-else class="mb-4 animate__animated animate__fadeIn" style="cursor: default;">
-        <div class="d-flex justify-content-center align-items-start me-2">
+        <div class="d-flex justify-content-end align-items-start">
             <p class="m-0 chat-box-right small">
                 [[ message.text_message ]]
             </p>
             <div class="position-relative me-2" style="flex-shrink: 0">
-                <img :src="message.avatar_src" class="rounded-avatar-messanger" width="38px"/>
+                <img :src="message.avatar_src" class="rounded-avatar-messanger" />
                 <span class="online-marker"></span>
             </div>
         </div>

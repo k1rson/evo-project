@@ -104,7 +104,23 @@
                 </div>
             </div>
 
-            <main class="mt-4">
+            <!-- loader page -->
+            <div id="loader" class="d-flex justify-content-center align-items-center" style="margin-top: 350px;">
+                <div v-if="show_loader" class="container">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-4 col-md-12 col-lg-12 col-xl-8 col-xxl-4">
+                            <div class="mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px; cursor: default;">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="spinner-border mx-2"></div>
+                                    <p class="m-0">Ожидайте, подсистема подгружается...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main id="main" class="mt-4 d-none animate__animated animate__fadeIn">
                 <div class="container-fluid">
                     <div class="container-fluid bg-light shadow animate__animated animate__fadeIn" style="background-clip: border-box; border: 1px solid rgba(0,0,0,.125);">
                         <div class="row">
@@ -417,6 +433,7 @@
                             <!-- RIGHT BAR -->
                             <div id="messanger-app" class="col-9 col-md-6 col-lg-7 col-xl-8 col-xxl-9 d-flex flex-column" style="min-height: 750px;">
 
+                                <!-- приглашение выбрать чат -->
                                 <div v-if="!selected_chat" class="container">
                                     <div class="row d-flex justify-content-center align-items-center" style="margin-top: 310px;">
                                         <div class="col-4 col-md-12 col-lg-12 col-xl-8 col-xxl-4">
@@ -443,16 +460,19 @@
                                     
                                                 <div class="mx-2">
                                                     <p class="mt-0 mb-0">[[ selected_chat.room_name ]]</p>
-                                                    <p class="small text-muted">Участники: [[ selected_chat.participants.join(', ') ]]</p>
+                                                    <p class="small text-muted">Кол-во участников: [[ selected_chat.participants.length ]]</p>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="divider-horizontal" style="margin-bottom: 15px; margin-top: 0px;"></div>
                                     </div>
 
                                     <!-- messages chat -->
                                     <div class="row" style="margin-left: -30px;">
-                                        <!-- loader for msgs -->
-                                        <div v-if="show_loader" class="container">
+
+                                        <!-- ожидание подгрузки сообщений -->
+                                        <div v-show="show_loader" class="container">
                                             <div class="row d-flex justify-content-center align-items-center" style="margin-top: 275px;">
                                                 <div class="col-4 col-md-12 col-lg-12 col-xl-8 col-xxl-4">
                                                     <div class="mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px; cursor: default;">
@@ -466,29 +486,50 @@
                                         </div>
 
                                         <!-- messages -->
-                                        <div v-if="!show_loader" class="container-fluid">
-                                            <div class="overflow-auto custom-scrollbar" style="max-height: 750px;">
+                                        <div v-show="!show_loader">
+                                            <div v-if="chat_messages[selected_chat.id]" class="overflow-auto custom-scrollbar scroll-area" style="max-height: 750px;" ref="chat_scroll_area">
                                                 <chat-messages
-                                                    v-for="message in messages"
+                                                    v-for="message in chat_messages[selected_chat.id]"
                                                     :message="message"
                                                     :key="message.id"
-                                                    >
-
+                                                >
                                                 </chat-messages>
                                             </div>
+                                            <div v-else>
+                                                <div class="container">
+                                                    <div class="row d-flex justify-content-center align-items-center" style="margin-top: 275px;">
+                                                        <div class="col-4 col-md-12 col-lg-12 col-xl-8 col-xxl-4">
+                                                            <div class="mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px; cursor: default;">
+                                                                <div class="d-flex justify-content-center align-items-center">
+                                                                    <p class="m-0">В этом чате нет сообщений, напишите что-нибудь...</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
-
                                 <!-- footer chat -->
                                 <div v-if="selected_chat" class="mt-auto" style="margin-left: -15px;">
+                                    <div class="divider-horizontal" style="margin: 0.1rem 7; margin-bottom: 10px;"></div>
                                     <div class="container-fluid mb-3">
                                         <div class="d-flex justify-content-center align-items-center">
                                             <div class="input-group">
-                                                <img src="{% static 'image/svg/icon-smile.svg' %}" width="27px" class="me-2">
-                                                <input type="text" class="form-control" placeholder="Напишите что-нибудь, затем нажмите Enter"
-                                                    v-model="msg">
-                                                <button class="btn btn-sm btn-outline-success mx-2" @click="send_message">Отправить</button>
+                                                <label class="input-group-text" for="file-input" style="cursor: pointer;">
+                                                    <img src="{% static 'image/svg/icon-paper-clip.svg' %}" width="20px">
+                                                </label>
+                                                <input id="file-input" type="file" style="display: none;">
+
+                                                <span class="input-group-text"><img src="{% static 'image/svg/icon-smile.svg' %}" width="20px"></span>
+
+                                                <input type="text" class="form-control" placeholder="Напишите что-нибудь и нажмите Enter..." 
+                                                    v-model="user_message"
+                                                    @keyup.enter="send_message"
+                                                >
+                                                <button class="btn btn-sm btn-outline-success" @click="send_message">Отправить</button>
                                             </div>
                                         </div>
                                     </div>
@@ -500,7 +541,7 @@
             </main>
 
             <!-- footer -->
-            <div class="container-fluid">
+            <div id="footer" class="container-fluid d-none">
                 <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
                     <p class="col-md-4 mb-0 text-body-secondary mt-4">© 2023 HWorking, Inc</p>
                     <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mt-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -517,6 +558,7 @@
 {% endblock content %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
 <script src="{% static 'js/chat_app_components.js' %}"></script>
 <script src="{% static 'js/chat_app_vue.js' %}"></script>
 {% endblock scripts %}

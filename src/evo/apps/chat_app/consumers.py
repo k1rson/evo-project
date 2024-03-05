@@ -2,15 +2,19 @@ import json
 import humanize, humanize.i18n
 
 from django.utils import timezone as tz
+from asgiref.sync import sync_to_async
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 
 from apps.authentication_app.models import CustomUser
+from apps.chat_app.models import MessageModel, ChatRoomModel
 
 @database_sync_to_async
 def get_user(user_id):
     return CustomUser.objects.get(pk=user_id)
+
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -33,6 +37,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         user_id = data['user_id']
+        chat_id = data['chat_id']
         text_message = data['text_message']
 
         user = await get_user(user_id)
@@ -41,12 +46,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         current_datetime = tz.now()
         formatted_datetime = humanize.naturaldate(current_datetime) + " | " + current_datetime.strftime('%H:%M')
 
+        # save msg
+        await self.save_message(user, chat_id, text_message, current_datetime)
+
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'user_id': user_id,
+                'chat_id': chat_id,
                 'full_name': f'{user.last_name} {user.first_name}',
                 'avatar_src': user.src_avatar.url,
                 'timestamp': formatted_datetime,
@@ -57,6 +66,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     async def chat_message(self, event):
         user_id = event['user_id']
+        chat_id = event['chat_id']
         text_message = event['text_message']
         full_name = event['full_name']
         avatar_src = event['avatar_src']
@@ -66,12 +76,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'chat_message',
             'user_id': user_id,
+            'chat_id': chat_id,
             'full_name': full_name,
             'avatar_src': avatar_src,
             'timestamp': timestamp,
             'text_message': text_message,
         }))
 
+    @sync_to_async
+    def save_message(self, user, room_id, text_message, timestamp):
+        room = ChatRoomModel.objects.get(pk=room_id)
+
+        try:
+            MessageModel.objects.create(
+                sender_id = user, 
+                room_id = room,
+                text_message = text_message,
+                timestamp = timestamp
+            )
+        except Exception as e:
+            return print(f'exception: {e}')
 
 class UpdateStatusUserConsumer(AsyncWebsocketConsumer):
     async def connect(self):

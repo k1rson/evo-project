@@ -3,7 +3,7 @@ import humanize, humanize.i18n
 from rest_framework import serializers
 from drf_extra_fields.fields import Base64ImageField
 
-from apps.chat_app.models import ChatRoomModel, UserChatRoomModel, ChatRoomInvitationModel
+from apps.chat_app.models import ChatRoomModel, UserChatRoomModel, ChatRoomInvitationModel, MessageModel
 from apps.authentication_app.models import CustomUser
 
 from .utils import check_image
@@ -137,3 +137,32 @@ class EmployeeSerializer(serializers.ModelSerializer):
     def get_last_activity(self, instance):
         _t = humanize.i18n.activate("ru_RU")
         return humanize.naturaltime(instance.last_activity)
+    
+class MessageSerializer(serializers.ModelSerializer):
+    """Сериализатор для представления получения сообщений пользователей"""
+    is_owner_msg = serializers.SerializerMethodField()
+    sender_full_name = serializers.SerializerMethodField()
+    sender_src_avatar = serializers.SerializerMethodField()
+    timestamp = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MessageModel
+        fields = ['sender_full_name', 'room_id', 'text_message', 'timestamp', 'is_owner_msg', 'sender_src_avatar']
+
+    def get_timestamp(self, instance):
+        _t = humanize.i18n.activate("ru_RU")
+        return humanize.naturaldate(instance.timestamp) + " | " + instance.timestamp.strftime('%H:%M')
+
+    def get_sender_src_avatar(self, instance):
+        return instance.sender_id.src_avatar.url
+
+    def get_sender_full_name(self, instance):
+        return f'{instance.sender_id.last_name} {instance.sender_id.first_name}'
+
+    def get_is_owner_msg(self, instance):
+        if instance.sender_id.id == self.context.get('user_id'):
+            return True
+        
+        return False
+
+    
