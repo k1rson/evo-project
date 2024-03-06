@@ -19,8 +19,6 @@ class SharedChatRoomsAPI(APIView):
     def get(self, request):
         current_user = request.user
 
-        
-
         excluded_rooms_ids = UserChatRoomModel.objects.filter(user_id=current_user.id).values_list('room_id', flat=True)
         shared_chat_rooms = ChatRoomModel.objects.exclude(id__in=excluded_rooms_ids)
 
@@ -34,6 +32,31 @@ class SharedChatRoomsAPI(APIView):
         return Response(data={
             'success': True, 
             'shared_chat_rooms': serializer.data
+            }, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        room_id = request.query_params.get('room_id')
+        current_user = request.user
+
+        if not room_id:
+            return Response(data={
+                'success': False,
+                'err_msg': error_messages.ERROR_CHAT_APP_USER_NOT_FOUND
+            }, status=status.HTTP_200_OK)
+        
+        try:
+            room = ChatRoomModel.objects.get(pk=room_id)
+            UserChatRoomModel.objects.create(room_id=room, user_id=current_user)
+            
+            return Response(data={
+                    'success': True, 
+                    'data': 'accept'
+            })
+
+        except ChatRoomModel.DoesNotExist:
+            return Response(data={
+                'success': False,
+                'err_msg': 'not room'
             }, status=status.HTTP_200_OK)
     
 class UserChatRoomsAPI(APIView):

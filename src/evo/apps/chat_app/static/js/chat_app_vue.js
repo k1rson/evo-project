@@ -277,6 +277,32 @@ const chat_rooms_app = new Vue({
                     call_toast(`Ошибка сервера: ${error.detail} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
              })
         }, 
+        send_shared_chat_accept(room_id){
+            const url = `/api/v1/chat-room-api/shared-chat-rooms?room_id=${room_id}`;
+
+            fetch(url, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json', 
+                    'Authorization': `Token ${Cookies.get('token')}`,
+                    'Cookie': `csrf_token=${Cookies.get('csrf_token')}`
+                }, 
+                })
+                .then(check_response)
+                .then(response => {
+                    if(!response.success){
+                        call_toast(`Ошибка: ${response.err_msg}`)
+                        return;
+                    }
+
+                    this.get_user_chat_rooms();
+                    this.get_shared_chat_rooms();
+                })
+                .catch(error => {
+                    call_toast(`Ошибка сервера: ${error.detail} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
+             })
+        },
 
         show_messanger(selected_chat){
             messanger_app.show_chat(selected_chat);
@@ -290,8 +316,14 @@ const employees_app = new Vue({
     data(){
         return{
             employees: [],
+            searched_employees: [],
+
+            query: '',
+            feedback_message: '',
 
             show_employees: true, 
+            show_seached_employee: false,
+            show_feedback: false,
         }
     }, 
     mounted(){
@@ -344,7 +376,29 @@ const employees_app = new Vue({
                 .catch(error => {
                     call_toast(`Ошибка сервера: ${error} Пожалуйста, попробуйте перезайти в аккаунт, или же обратитесь к системному администратору`);
                 })
-        }, 
+        },
+        search_employee() {
+            this.show_seached_employee = true;
+            if(this.query <= 0){
+                this.show_seached_employee = false;
+                this.show_feedback = false;
+                return;
+            }
+
+            const query = this.query.toLowerCase();
+            this.searched_employees = [];
+            for (const employee of this.employees) {
+                const fullName = `${employee.first_name} ${employee.last_name}`.toLowerCase();
+                if (fullName.includes(query)) {
+                    this.searched_employees.push({...employee});
+                }
+            }
+
+            if(this.searched_employees.length === 0){
+                this.show_feedback = true;
+                this.feedback_message = 'Сотрудников с заданными параметрами не найдено';
+            }
+        }
     }
 })
 
@@ -360,9 +414,7 @@ const messanger_app = new Vue({
             user_message: '',
             
             show_loader: false, 
-
             should_scrool_bottom: false,
-            scrool_target: undefined, 
         }
     }, 
     methods: {
@@ -441,6 +493,10 @@ const messanger_app = new Vue({
                 })
         },
         send_message(){
+            if(this.user_message.length === 0){
+                return;
+            }
+
             this.ws.send(JSON.stringify({
                 'user_id': USER_ID,
                 'text_message': this.user_message, 
@@ -448,6 +504,7 @@ const messanger_app = new Vue({
             }));
 
             this.user_message = '';
+            this.reset_text_area();
         },
 
         // other func
@@ -455,6 +512,23 @@ const messanger_app = new Vue({
             const container = this.$refs.chat_scroll_area;
             if(container){
                 gsap.to(container, { duration: 1.0, scrollTop: container.scrollHeight });
+            }
+        },
+        resize_text_area() {
+            const textArea = this.$refs.text_area;
+            textArea.style.height = '15px';
+            textArea.style.height = Math.min(textArea.scrollHeight, 300) + 'px';
+        },
+        reset_text_area(){
+            const textArea = this.$refs.text_area;
+            textArea.style.height = '15px';
+        },
+        handle_enter_key(event) {
+            if (event.shiftKey) {
+                this.user_message += '\n';
+                return;
+            } else {
+                this.send_message();
             }
         },
     }

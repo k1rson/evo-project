@@ -127,11 +127,10 @@
                             <!-- на md остановиться LEFT BAR -->
                             <div class="col-6 ol-md-6 col-lg-5 col-xl-4 col-xxl-3 d-flex flex-column col-border" style="min-height: 750px;">
 
-                                <!-- СЕКЦИЯ ДЕЙСТВИЙ -> создание чатов, каналов, выход и т.д. -->
+                                <!-- СЕКЦИЯ ДЕЙСТВИЙ -> создание чатов, выход и т.д. -->
                                 <div class="row" id="tooltip-actions-app">
                                     <div class="container-fluid d-flex justify-content-center align-items-center mt-2">
                                         <button class="btn btn-sm btn-outline-success mb-1 mx-1" @click="show_chat_creation_card = true;">Создать общий чат</button>
-                                        <button class="btn btn-sm btn-outline-success disabled mb-1 mx-1">Создать канал</button>
                                         <button class="btn btn-sm btn-outline-danger disabled mb-1">Покинуть все чаты</button>
                                     </div>
 
@@ -205,13 +204,6 @@
                                             </div>
                                         </div>
                                     </transition>
-
-                                    <!-- create channel -->
-                                    <div class="container-fluid d-none">
-                                        <div class="mt-1 mb-2 p-2" style="border: 1px solid rgb(124, 150, 183); border-radius: 6px;">
-                                            create channek
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <!-- СЕКЦИЯ ЧАТОВ -->
@@ -287,7 +279,7 @@
                                                     v-for="shared_chat_room in shared_chat_rooms" 
                                                     :key="shared_chat_room.id" 
                                                     :shared_chat_room="shared_chat_room"
-                                                    >
+                                                    @chat-action="send_shared_chat_accept">
                                                 </shared-chat-room>
 
                                                 <div v-if="show_empty_shared_chat_rooms" class="d-flex justify-content-center align-items-center mt-1 mb-2 p-2 animate__animated animate__fadeInDown" style="border: 1px solid rgb(250, 179, 195); border-radius: 6px; cursor: default;">
@@ -388,19 +380,30 @@
                                                 <!-- поиск сотрудников -->
                                                 <div class="input-group input-group-sm mt-1">
                                                     <span class="input-group-text"><img src="{% static 'image/svg/icon-search.svg' %}" width="17px"></span>
-                                                    <input type="text" class="form-control" placeholder="Введите (логин, или имя, или фамилию) пользователя...">
+                                                    <input @input="search_employee" v-model="query" type="text" class="form-control" placeholder="Введите (имя или фамилию) пользователя...">
                                                 </div>
 
                                                 <!-- список сотрудников -->
                                                 <div v-if="show_employees" class="overflow-auto custom-scrollbar" style="max-height: 350px;">
                                                     <employee
+                                                        v-if="!show_seached_employee"
                                                         v-for="employee in employees"
                                                         :key="employee.id"
                                                         :employee="employee">
                                                     </employee>
+
+                                                    <!-- список найденных сотрудников по поиску -->
+                                                    <employee
+                                                        v-if="show_seached_employee"
+                                                        v-for="employee in searched_employees"
+                                                        :key="employee.id"
+                                                        :employee="employee">
+                                                    </employee>
+
+                                                    <p v-if="show_feedback" class="text-danger small">[[ feedback_message ]]</p>
                                                 </div>
 
-                                                <div class="d-flex justify-content-center align-items-center">
+                                                <div class="d-flex justify-content-center align-items-center d-none">
                                                     <button class="btn btn-sm btn-outline-secondary">Все</button>
                                                     <button class="btn btn-sm btn-outline-secondary mx-1 me-1">Онлайн</button>
                                                     <button class="btn btn-sm btn-outline-secondary">Оффлайн</button>
@@ -514,24 +517,21 @@
                                 </div>
                                 <!-- footer chat -->
                                 <div v-if="selected_chat" class="mt-auto" style="margin-left: -15px;">
-                                    <div class="divider-horizontal" style="margin: 0.1rem 7; margin-bottom: 10px;"></div>
-                                    <div class="container-fluid mb-3">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="input-group">
-                                                <label class="input-group-text" for="file-input" style="cursor: pointer;">
-                                                    <img src="{% static 'image/svg/icon-paper-clip.svg' %}" width="20px">
-                                                </label>
-                                                <input id="file-input" type="file" style="display: none;">
-
-                                                <span class="input-group-text"><img src="{% static 'image/svg/icon-smile.svg' %}" width="20px"></span>
-
-                                                <input type="text" class="form-control" placeholder="Напишите что-нибудь и нажмите Enter..." 
-                                                    v-model="user_message"
-                                                    @keyup.enter="send_message"
-                                                >
-                                                <button class="btn btn-sm btn-outline-success" @click="send_message">Отправить</button>
-                                            </div>
-                                        </div>
+                                    <div class="divider-horizontal" style="margin: 0.1rem 7; margin-bottom: 10px;">
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-end mx-4 mb-2">
+                                        <textarea class="form-control"
+                                            placeholder="Напишите что-нибудь и нажмите Enter..."
+                                            ref="text_area"
+                                            v-model="user_message"
+                                            style="height: 15px;max-height: 250px;"
+                                            @input="resize_text_area"
+                                            @keydown.enter.prevent="handle_enter_key"
+                                        ></textarea>
+                                    
+                                        <span @click="send_message" class="input-group-text mx-2" style="cursor: pointer; flex-shrink: 0;">
+                                            <img src="{% static 'image/svg/icon-send-message.svg' %}" width="23px">
+                                        </span>
                                     </div>
                                 </div>
                             </div>

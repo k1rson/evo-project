@@ -52,7 +52,9 @@ body {
     border-radius: 30px;
     border-top-left-radius: 0.25rem;
     display: inline-block;
-    max-width: 80%; /* Можно также указать максимальную ширину */
+    max-width: 70%;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .chat-box-right {
@@ -63,9 +65,15 @@ body {
     padding: 0.75rem 1.5rem;
     border-radius: 30px;
     border-top-right-radius: 0.25rem;
-    max-width: 60%;
+    max-width: 70%;
     display: inline-block;
     text-align: left;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+textarea {
+    resize: none; /* Убираем возможность изменения размера textarea пользователем */
 }
 
 .online-marker {
